@@ -3,6 +3,11 @@
     width:100%;
 }
 
+/* Page background color */
+body {
+    background-color: ivory; /* Off-white background color */
+}
+
 /* Popup title */
 .popup-title {
     font-weight: bold;
@@ -47,4 +52,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* Introduction Background */
+.intro {
+    background-color: #EBDFCE; /* Set background color to EBDFCE */
+    padding: 20px; /* Add padding for better appearance */
 }
