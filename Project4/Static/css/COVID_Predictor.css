@@ -1,41 +1,21 @@
-/* Popup styles */
-.popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 20px;
-    z-index: 9999;
+/* Navbar */
+.navbar.navbar-dark.bg-dark {
+    width:100%;
 }
 
-.popup-content {
-    text-align: center;
-}
-
+/* Popup title */
 .popup-title {
     font-weight: bold;
     font-size: 24px;
 }
 
+/* Popup text */
 .popup-text {
     font-size: 16px;
 }
 
-.close-popup {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    color: red;
-}
-
+/* Continue button */
 .continue-button {
-    display: inline-block;
-    margin-top: 20px;
     padding: 10px 20px;
     background-color: lightgreen;
     border-radius: 5px;
@@ -44,4 +24,27 @@
 
 .continue-button:hover {
     background-color: limegreen;
+}
+
+/* center vertically */
+.modal {
+    align-items: center;
+}
+
+/* Center horizontally */
+.modal-dialog {
+    margin: 0 auto;
+    max-width: 800px !important; 
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: center;
+}
+
+/* Center the modal title vertically */
+.modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
