@@ -106,6 +106,14 @@ body {
     background-color: #cdecff;
 }
 
+.hover-bg-light-orange:hover {
+    background-color: #FFDAB9;
+}
+
+.hover-bg-light-orange:focus {
+    background-color: #FFDAB9;
+}
+
 .pa3 {
     padding: 1rem;
 }
