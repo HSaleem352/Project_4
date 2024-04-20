@@ -208,30 +208,76 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Function to check if all select elements are answered
+            // Function to check if all questions are answered
             function checkAllQuestionsAnswered() {
                 var selects = document.querySelectorAll("select");
-                for (var i = 0; i < selects.length; i++) {
-                    if (selects[i].value === "") {
-                        return false;
+                var radios = document.querySelectorAll("input[type='radio']");
+                var allAnswered = true;
+                selects.forEach(function(select) {
+                    if (select.value === "") {
+                        allAnswered = false;
                     }
-                }
-                return true;
+                });
+                radios.forEach(function(radio) {
+                    var name = radio.getAttribute("name");
+                    if (!document.querySelector("input[name='" + name + "']:checked")) {
+                        allAnswered = false;
+                    }
+                });
+                return allAnswered;
             }
-
+    
             // Function to handle predict button click
             function handlePredictButtonClick() {
+                var selects = document.querySelectorAll("select");
+                var radios = document.querySelectorAll("input[type='radio']");
                 if (checkAllQuestionsAnswered()) {
                     // All questions answered, proceed with prediction
-                    // Gathering the data and pass it to the JavaScript file
                     console.log("All questions answered. Proceeding with prediction...");
                     document.getElementById("errorMessage").style.display = "none"; // Hide error message
+                    selects.forEach(function(select) {
+                        select.classList.remove("unanswered");
+                    });
+                    radios.forEach(function(radio) {
+                        var name = radio.getAttribute("name");
+                        var questionRadioButtons = document.querySelectorAll("input[name='" + name + "']");
+                        var isAnswered = false;
+                        questionRadioButtons.forEach(function(radioButton) {
+                            if (radioButton.checked) {
+                                isAnswered = true;
+                            }
+                        });
+                        if (!isAnswered) {
+                            questionRadioButtons.forEach(function(radioButton) {
+                                radioButton.classList.add("unanswered");
+                            });
+                        }
+                    });
                 } else {
-                    // Not all questions answered, display error message
+                    // Not all questions answered, display error message and highlight unanswered questions
                     document.getElementById("errorMessage").style.display = "block";
+                    selects.forEach(function(select) {
+                        if (select.value === "") {
+                            select.classList.add("unanswered");
+                        } else {
+                            select.classList.remove("unanswered");
+                        }
+                    });
+                    radios.forEach(function(radio) {
+                        var name = radio.getAttribute("name");
+                        if (!document.querySelector("input[name='" + name + "']:checked")) {
+                            document.querySelectorAll("input[name='" + name + "']").forEach(function(radioButton) {
+                                radioButton.classList.add("unanswered");
+                            });
+                        } else {
+                            document.querySelectorAll("input[name='" + name + "']").forEach(function(radioButton) {
+                                radioButton.classList.remove("unanswered");
+                            });
+                        }
+                    });
                 }
             }
-
+    
             // Add event listener to predict button
             document.getElementById("predictButton").addEventListener("click", handlePredictButtonClick);
         });
