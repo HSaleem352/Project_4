@@ -81,3 +81,17 @@ body {
 .spacer {
     margin-bottom: 50px; /* Adjust the space between the questions */
 }
+
+.predict-button {
+    display: block;
+    margin: 0 auto;
+    border-radius: 20px;
+    background-color: #99afb3;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+}
+
+.predict-button:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
