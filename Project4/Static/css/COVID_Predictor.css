@@ -82,6 +82,10 @@ body {
     margin-bottom: 50px; /* Adjust the space between the questions */
 }
 
+#predictButton {
+    color: white;
+}
+
 .predict-button {
     display: block;
     margin: 0 auto;
@@ -93,9 +97,16 @@ body {
 }
 
 .predict-button:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .unanswered {
-    box-shadow: 0 0 10px 5px rgba(255, 105, 180, 0.5);
+    box-shadow: 0 0 10px 5px rgba(243, 78, 78, 0.5);
+}
+
+.error-message {
+    font-weight: bold;
+    display: none;
+    text-align: center; /* Center-align the text */
+    color: red;
 }

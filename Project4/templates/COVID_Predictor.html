@@ -172,9 +172,10 @@
 
             </div>
             <!-- Predict button -->
-            <button id="predictButton" type="button" class="btn btn-primary">Predict</button>
+            <button id="predictButton" type="button" class="predict-button">PREDICT</button>
             <!-- Error message -->
-            <p id="errorMessage" style="color: red; display: none;">Please answer all questions before predicting.</p>
+            <p> </p>
+            <p id="errorMessage" class="error-message">Please answer all questions before predicting.</p>
         </div>
     </div>
     <!-- Popper.js -->
@@ -226,7 +227,7 @@
                 });
                 return allAnswered;
             }
-    
+
             // Function to handle predict button click
             function handlePredictButtonClick() {
                 var selects = document.querySelectorAll("select");
@@ -250,6 +251,11 @@
                         if (!isAnswered) {
                             questionRadioButtons.forEach(function(radioButton) {
                                 radioButton.classList.add("unanswered");
+                            });
+                        } else {
+                            // Remove the highlight if the question is answered
+                            questionRadioButtons.forEach(function(radioButton) {
+                                radioButton.classList.remove("unanswered");
                             });
                         }
                     });
@@ -277,7 +283,7 @@
                     });
                 }
             }
-    
+
             // Add event listener to predict button
             document.getElementById("predictButton").addEventListener("click", handlePredictButtonClick);
         });
