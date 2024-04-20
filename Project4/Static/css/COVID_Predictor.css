@@ -55,7 +55,13 @@ body {
 }
 
 /* Introduction Background */
-.intro {
+.instruction {
     background-color: #EBDFCE; /* Set background color to EBDFCE */
     padding: 20px; /* Add padding for better appearance */
+    margin-bottom: 30px; /* Add space between the instruction  section and questionnaire*/
+}
+
+/* Move the questionnaire to the right */
+.questionnaire {
+    margin-left: 50px; 
 }
