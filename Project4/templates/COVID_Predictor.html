@@ -53,12 +53,76 @@
     </div>
     
     <!-- Questionnaire -->
-    <div class="questionnaire">
-        <!-- Dropdown menu questions -->
-        <div class="dropdown-questions">
-            <p>Age</p>
-            <select name="age" id="ageSelect">
-            </select>
+    <div class="content-box">
+        <div class="questionnaire">
+            <!-- Dropdown menu questions -->
+            <div class="dropdown-questions">
+                <p>Age</p>
+                <select name="age" id="ageSelect">
+                    <option value=""></option>
+                </select>
+                <p class="spacer">&nbsp;</p>
+                <p>Race/Ethnicity</p>
+                <select name="Race/Ethnicity">
+                    <option value=""></option>
+                    <option value="Hispanic">Hispanic</option>
+                    <option value="Non-Hispanic AAPI">Non-Hispanic AAPI</option>
+                    <option value="Non-Hispanic Black">Non-Hispanic Black</option>
+                    <option value="Non-Hispanic White">Non-Hispanic White</option>
+                    <option value="Other">Other</option>
+                </select>
+                <p class="spacer">&nbsp;</p>
+                <p>Residential Area Type</p>
+                <select name="Residential Area Type">
+                    <option value=""></option>
+                    <option value="Urban">Urban/City</option>
+                    <option value="Suburban">Suburban/Town</option>
+                    <option value="Rural">Rural/Country</option>
+                </select>
+                <p class="spacer">&nbsp;</p>
+                <p>Smoking Status</p>
+                <select name="Smoking Status">
+                    <option value=""></option>
+                    <option value="Never">Never</option>
+                    <option value="Current or Former">Current or Former</option>
+                </select>
+                <p class="spacer">&nbsp;</p>
+                <p>Cancer Status</p>
+                <select name="Cancer Status">
+                    <option value=""></option>
+                    <option value="Remission (NED, Remote)">Remission (NED, Remote)</option>
+                    <option value="Remission (NED, Recent)">Remission (NED, Recent)</option>
+                    <option value="Active & Responding">Active & Responding</option>
+                    <option value="Active & Stable">Active & Stable</option>
+                    <option value="Active & Progressing">Active & Progressing</option>
+                    <option value="Unknown">Unknown</option>
+                </select>
+                <p class="spacer">&nbsp;</p>
+            </div>
+            <!-- Yes/No questions -->
+            <div class="yes-no-questions">
+                <p>No Cancer Treatment In the 3 Months Prior to COVID-19</p>
+                <label><input type="radio" name="cancer treatment" value="yes"> Yes</label>
+                <label><input type="radio" name="cancer treatment" value="no"> No</label>
+                <p class="spacer">&nbsp;</p>
+                <p>Diabetes Mellitus</p>
+                <label><input type="radio" name="Diabetes Mellitus" value="yes"> Yes</label>
+                <label><input type="radio" name="Diabetes Mellitus" value="no"> No</label>
+                <p class="spacer">&nbsp;</p>
+                <p>Cardiovascular Comorbidity (CAD, CHF, Afib, arrhythmia NOS, PVD, CVA, cardiac disease NOS)</p>
+                <label><input type="radio" name="Cardiovascular Comorbidity" value="yes"> Yes</label>
+                <label><input type="radio" name="Cardiovascular Comorbidity" value="no"> No</label>
+                <p class="spacer">&nbsp;</p>
+                <p>Pulmonary Comorbidities</p>
+                <label><input type="radio" name="Pulmonary Comorbidities" value="yes"> Yes</label>
+                <label><input type="radio" name="Pulmonary Comorbidities" value="no"> No</label>
+                <p class="spacer">&nbsp;</p>
+                <p>Renal Comorbidities</p>
+                <label><input type="radio" name="Renal Comorbidities" value="yes"> Yes</label>
+                <label><input type="radio" name="Renal Comorbidities" value="no"> No</label>
+                <p class="spacer">&nbsp;</p>
+
+            </div>
         </div>
     </div>
     <!-- jQuery library -->
