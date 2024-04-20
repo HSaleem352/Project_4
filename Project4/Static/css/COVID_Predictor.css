@@ -54,6 +54,14 @@ body {
     align-items: center;
 }
 
+.content-box {
+    margin: 20px auto;
+    padding: 20px;
+    width: 80%;
+    background-color: #d1dbc2;
+    border: 1px solid #ccc;
+}
+
 /* Introduction Background */
 .instruction {
     background-color: #EBDFCE; /* Set background color to EBDFCE */
@@ -63,7 +71,7 @@ body {
 
 /* Move the questionnaire to the right */
 .questionnaire {
-    margin-left: 100px; 
+    margin-left: 90px; 
 }
 
 .dropdown-questions p {
