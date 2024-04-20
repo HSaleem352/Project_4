@@ -172,7 +172,9 @@
 
             </div>
             <!-- Predict button -->
-            <button type="button" class="predict-button">PREDICT</button>
+            <button id="predictButton" type="button" class="btn btn-primary">Predict</button>
+            <!-- Error message -->
+            <p id="errorMessage" style="color: red; display: none;">Please answer all questions before predicting.</p>
         </div>
     </div>
     <!-- Popper.js -->
@@ -202,6 +204,36 @@
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Function to check if all select elements are answered
+            function checkAllQuestionsAnswered() {
+                var selects = document.querySelectorAll("select");
+                for (var i = 0; i < selects.length; i++) {
+                    if (selects[i].value === "") {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            // Function to handle predict button click
+            function handlePredictButtonClick() {
+                if (checkAllQuestionsAnswered()) {
+                    // All questions answered, proceed with prediction
+                    // Gathering the data and pass it to the JavaScript file
+                    console.log("All questions answered. Proceeding with prediction...");
+                    document.getElementById("errorMessage").style.display = "none"; // Hide error message
+                } else {
+                    // Not all questions answered, display error message
+                    document.getElementById("errorMessage").style.display = "block";
+                }
+            }
+
+            // Add event listener to predict button
+            document.getElementById("predictButton").addEventListener("click", handlePredictButtonClick);
         });
     </script>
 </body>
