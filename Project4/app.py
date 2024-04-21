@@ -50,8 +50,8 @@ def COVID_Predictor():
     if request.method == 'POST':
         # Check if the request contains JSON data
         if request.is_json:
-            data = request.json
-            result = process_input(data.get('userInput'))
+            data = dict(request.form)
+            result = process_input(data)
             return jsonify(result)
         else:
             return jsonify({'error': 'Request must be JSON'}), 400
