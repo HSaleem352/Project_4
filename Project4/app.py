@@ -8,6 +8,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, text, inspect, func
 from flask import Flask, jsonify, render_template
+from flask import request
 import tensorflow as tf
 import h5py
 
@@ -44,13 +45,25 @@ def Limitations_References():
 ##                                            COVID-19 Risk Wizard Page                                        ##
 #################################################################################################################
 
-@app.route('/COVID_Predictor', methods=['GET', 'POST'])
+@app.route('/COVID_Predictor', methods=['GET','POST'])
 def COVID_Predictor():
-    with h5py.File('resources/AlphabetSoupCharity.hdf5', 'r') as f:
-        # Get all keys
-        print("All keys: %s" % f.keys())
+    if request.method == 'POST':
+        # Check if the request contains JSON data
+        if request.is_json:
+            data = request.json
+            result = process_input(data.get('userInput'))
+            return jsonify(result)
+        else:
+            return jsonify({'error': 'Request must be JSON'}), 400
+    else:
+        # If it's a GET request, render an HTML page
+        return render_template("COVID_Predictor.html")
 
-    return render_template("COVID_Predictor.html")
+def process_input(input_data):
+    # Process input using machine learning model
+    # Return the result
+    return {'result': input_data}
+    
 
 #################################################################################################################
 ##                                                Mina                                                         ##
