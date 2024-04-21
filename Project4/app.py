@@ -7,9 +7,13 @@ import pandas as pd
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, text, inspect, func
+<<<<<<< HEAD
 from flask import Flask, jsonify, render_template
 import tensorflow as tf
 import h5py
+=======
+from flask import Flask, jsonify, render_template, request
+>>>>>>> Mina
 
 
 engine = create_engine('postgresql+psycopg2://breast_cancer_dataset_user:UnSNEeECgY7ky2i5KAPC2WtQn9XrRpvc@dpg-cnbvjf779t8c73epbb3g-a.oregon-postgres.render.com/breast_cancer_dataset')
@@ -44,13 +48,17 @@ def Limitations_References():
 ##                                            COVID-19 Risk Wizard Page                                        ##
 #################################################################################################################
 
-@app.route('/COVID_Predictor')
+@app.route('/COVID_Predictor', methods=['GET', 'POST'])
 def COVID_Predictor():
+<<<<<<< HEAD
     with h5py.File('resources/AlphabetSoupCharity.hdf5', 'r') as f:
         # Get all keys
         print("All keys: %s" % f.keys())
 
     return render_template("COVID_Predictor.html")
+=======
+    return render_template("COVID_Predictor.html", prediction=None)
+>>>>>>> Mina
 
 #################################################################################################################
 ##                                                Mina                                                         ##

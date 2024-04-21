@@ -54,8 +54,59 @@ body {
     align-items: center;
 }
 
+.content-box {
+    margin: 20px auto;
+    padding: 20px;
+    width: 80%;
+    background-color: #d1dbc2;
+    border: 1px solid #ccc;
+}
+
 /* Introduction Background */
-.intro {
+.instruction {
     background-color: #EBDFCE; /* Set background color to EBDFCE */
     padding: 20px; /* Add padding for better appearance */
+    margin-bottom: 30px; /* Add space between the instruction  section and questionnaire*/
+}
+
+/* Move the questionnaire to the right */
+.questionnaire {
+    margin-left: 90px; 
+}
+
+.dropdown-questions p {
+    margin-bottom: 8px; /* Add space below each question */
+}
+
+.spacer {
+    margin-bottom: 50px; /* Adjust the space between the questions */
+}
+
+#predictButton {
+    color: white;
+}
+
+.predict-button {
+    display: block;
+    margin: 0 auto;
+    border-radius: 20px;
+    background-color: #99afb3;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+}
+
+.predict-button:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.unanswered {
+    box-shadow: 0 0 10px 5px rgba(243, 78, 78, 0.5);
+}
+
+.error-message {
+    font-weight: bold;
+    display: none;
+    text-align: center; /* Center-align the text */
+    color: red;
 }
