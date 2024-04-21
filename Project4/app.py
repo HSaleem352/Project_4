@@ -46,15 +46,11 @@ def Limitations_References():
 
 @app.route('/COVID_Predictor', methods=['GET', 'POST'])
 def COVID_Predictor():
-<<<<<<< HEAD
     with h5py.File('resources/AlphabetSoupCharity.hdf5', 'r') as f:
         # Get all keys
         print("All keys: %s" % f.keys())
 
     return render_template("COVID_Predictor.html")
-=======
-    return render_template("COVID_Predictor.html", prediction=None)
->>>>>>> Mina
 
 #################################################################################################################
 ##                                                Mina                                                         ##
