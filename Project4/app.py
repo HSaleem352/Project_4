@@ -1,7 +1,3 @@
-from flask import Flask, render_template, jsonify
-import pandas as pd
-import os
-
 # Python SQL toolkit and Object Relational Mapper
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
@@ -12,6 +8,9 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, text, inspect, func
 from flask import Flask, jsonify, render_template
+import tensorflow as tf
+import h5py
+
 
 engine = create_engine('postgresql+psycopg2://breast_cancer_dataset_user:UnSNEeECgY7ky2i5KAPC2WtQn9XrRpvc@dpg-cnbvjf779t8c73epbb3g-a.oregon-postgres.render.com/breast_cancer_dataset')
 
@@ -42,11 +41,15 @@ def Limitations_References():
     return render_template("limitations_references.html")
 
 #################################################################################################################
-##                                            COVID-19 Risk Wizard Page                                                  ##
+##                                            COVID-19 Risk Wizard Page                                        ##
 #################################################################################################################
 
 @app.route('/COVID_Predictor')
 def COVID_Predictor():
+    with h5py.File('resources/AlphabetSoupCharity.hdf5', 'r') as f:
+        # Get all keys
+        print("All keys: %s" % f.keys())
+
     return render_template("COVID_Predictor.html")
 
 #################################################################################################################
