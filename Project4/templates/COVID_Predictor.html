@@ -184,6 +184,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <!-- JavaScript -->
     <script>
         $(document).ready(function() {
@@ -208,6 +209,7 @@
         });
     </script>
     <script>
+        var formData = {};
         document.addEventListener("DOMContentLoaded", function() {
             // Function to check if all questions are answered
             function checkAllQuestionsAnswered() {
@@ -228,6 +230,7 @@
                 return allAnswered;
             }
 
+            
             // Function to handle predict button click
             function handlePredictButtonClick() {
                 var selects = document.querySelectorAll("select");
@@ -235,55 +238,7 @@
                 if (checkAllQuestionsAnswered()) {
                     // All questions answered, proceed with prediction
                     console.log("All questions answered. Proceeding with prediction...");
-                    
-                    //////////////////////////////////////////////////////////////////
-                    //////////////////////////////////////////////////////////////////
-                   
-                    // Collect form data
-                    var formData = {};
-                    selects.forEach(function(select) {
-                        formData[select.name] = select.value;
-                    });
-                    radios.forEach(function(radio) {
-                        if (radio.checked) {
-                            formData[radio.name] = radio.value;
-                        }
-                    });
 
-                    // Convert form data to JSON
-                    var formDataJson;
-                    try {
-                        formDataJson = JSON.stringify(formData);
-                    } catch (e) {
-                        console.error("Error converting form data to JSON:", e);
-                        return; // Exit early if conversion fails
-                    }
-                    
-                    // Send form data to Flask backend
-                    fetch("/COVID_Predictor", {
-                        method: "POST",
-                        body: formData
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Handle successful response
-                        console.log("Response from server:", data);
-                        // Update frontend with prediction result
-                        // For example, display the result on the page
-                    })
-                    .catch(error => {
-                        // Handle error
-                        console.error("Error:", error);
-                        // Handle errors here
-                    });
-                            
-                    
-                
-                    //////////////////////////////////////////////////////////////////
-                    //////////////////////////////////////////////////////////////////
-                   
-                    
-                    // Reset form highlights and error message
                     document.getElementById("errorMessage").style.display = "none"; // Hide error message
                     selects.forEach(function(select) {
                         select.classList.remove("unanswered");
@@ -307,7 +262,49 @@
                                 radioButton.classList.remove("unanswered");
                             });
                         }
+
+                        /////////////////////////////////////
+                        /////////////////////////////////////////////
+                        // Collect form data
+                    
+                    selects.forEach(function(select) {
+                        formData[select.name] = select.value;
                     });
+                    radios.forEach(function(radio) {
+                        if (radio.checked) {
+                            formData[radio.name] = radio.value;
+                        }
+                    });
+
+                    
+
+                    });
+
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+
+                    // Send Data
+                    console.log(JSON.stringify(formData))
+                    
+                    $.ajax({
+                    url: '/COVID_Predictor',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function(response) {
+                        // Display the processed result
+                        console.log("It Works")
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                    });
+
+                    
+
+////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
+
                 } else {
                     // Not all questions answered, display error message and highlight unanswered questions
                     document.getElementById("errorMessage").style.display = "block";
@@ -335,9 +332,37 @@
 
             // Add event listener to predict button
             document.getElementById("predictButton").addEventListener("click", handlePredictButtonClick);
-        });
-    </script>
+            
 
-    <script src="{{ url_for('static', filename='js/covid_predictor.js') }}"></script>
+            // function sendData() {
+            // $(document).ready(function() {
+            // $('#predictButton').click(function() {
+            //     console.log(JSON.stringify(formData))
+                
+            //     $.ajax({
+            //     url: '/COVID_Predictor',
+            //     type: 'POST',
+            //     contentType: 'application/json',
+            //     data: JSON.stringify(formData),
+            //     success: function(response) {
+            //         // Display the processed result
+            //         console.log("It Works")
+            //     },
+            //     error: function(error) {
+            //         console.error('Error:', error);
+            //     }
+            //     });
+
+            //     });
+            //     });
+            // };   
+        
+
+        });
+
+        
+
+        
+    </script>
 </body>
 </html>

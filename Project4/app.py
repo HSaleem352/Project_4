@@ -53,12 +53,12 @@ def COVID_Predictor():
         # Check if the request contains JSON data
         if request.is_json:
 
-            data = request.get_json()
+            data = request.json
             result = process_input(data)
             return jsonify(result)
         else:
             return jsonify({'error': 'Request must be JSON'}), 400
-    else:
+    elif request.method == 'GET':
         # If it's a GET request, render an HTML page
         return render_template("COVID_Predictor.html")
     
