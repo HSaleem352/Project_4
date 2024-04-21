@@ -12,6 +12,11 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, text, inspect, func
 from flask import Flask, jsonify, render_template
+import pickle
+import numpy as np
+import tensorflow as tf
+
+
 
 engine = create_engine('postgresql+psycopg2://breast_cancer_dataset_user:UnSNEeECgY7ky2i5KAPC2WtQn9XrRpvc@dpg-cnbvjf779t8c73epbb3g-a.oregon-postgres.render.com/breast_cancer_dataset')
 
@@ -425,6 +430,57 @@ def age_distribution_by_covid_severity():
 #################################################################################################################
 ##                                                  Debug                                                      ##
 #################################################################################################################
+
+
+@app.route('/risk')
+def risk_assessment_page():
+    return render_template("risk.html")
+
+
+@app.route("/api/v1/risk_query/<age>/<obesity>/<smoking>/<race>/<area>/<treatment>/<status>/<diabetes>/<cardiovascular>/<pulmonary>/<renal>")
+def risk_assessment(age, obesity, smoking, race, area, treatment, status, diabetes, cardiovascular, pulmonary, renal):
+    _yesno_map = {'false': 'No', 'true': 'Yes'}
+    _smoking_map = {'false': 'Never', 'true': 'Current or Former'}
+    data = pd.Series(
+        {'der_age_trunc': float(age),
+         'der_obesity': _yesno_map[obesity],
+         'der_smoking2': _smoking_map[smoking],
+         'der_race_v2': race,
+         'urban_rural': area,
+         'der_cancertr_none': _yesno_map[treatment],
+         'der_cancer_status_v4': status,
+         'der_dm2': _yesno_map[diabetes],
+         'der_card': _yesno_map[cardiovascular],
+         'der_pulm': _yesno_map[pulmonary],
+         'der_renal': _yesno_map[renal]
+         })
+    p = predict_model_dn(data)
+    users = [{'predicted_risk': str(round(p, 2)), 'std': -1}]
+    return jsonify(users)
+
+
+def preprocess_inp_dn(data):
+    with open('assets/dn/ohe.pkl', 'rb') as f:
+        one_hot_enc = pickle.load(f)
+    with open('assets/dn/scaler.pkl', 'rb') as f:
+        standard_scaler = pickle.load(f)
+    multi_categorical = ['der_race_v2', 'der_smoking2', 'urban_rural', 'der_cancer_status_v4']
+    binary = ['der_obesity', 'der_cancertr_none', 'der_dm2', 'der_card', 'der_pulm', 'der_renal']
+    continuous = ['der_age_trunc']
+
+    x_continous = standard_scaler.transform(data[continuous].values.reshape(1, -1))
+    x_categorical = one_hot_enc.transform(data[multi_categorical + binary].values.reshape(1, -1)).todense()
+    x = np.concatenate([x_continous, x_categorical], axis=-1)
+
+    return x
+
+
+def predict_model_dn(data):
+    x = preprocess_inp_dn(data)
+    model = tf.keras.models.load_model('assets/dn/model.h5')
+    p = model.predict(x, verbose=0)[0][0]
+    return p
+
 
 if __name__ == '__main__':
     app.run(debug=True)
