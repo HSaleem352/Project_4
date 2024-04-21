@@ -11,12 +11,13 @@ from flask import Flask, jsonify, render_template
 from flask import request
 import tensorflow as tf
 import h5py
+from flask_cors import CORS
 
 
 engine = create_engine('postgresql+psycopg2://breast_cancer_dataset_user:UnSNEeECgY7ky2i5KAPC2WtQn9XrRpvc@dpg-cnbvjf779t8c73epbb3g-a.oregon-postgres.render.com/breast_cancer_dataset')
 
 app = Flask(__name__)
-
+CORS(app) #enables all
 #################################################################################################################
 ##                                            Home Page                                                        ##
 #################################################################################################################
@@ -45,12 +46,14 @@ def Limitations_References():
 ##                                            COVID-19 Risk Wizard Page                                        ##
 #################################################################################################################
 
-@app.route('/COVID_Predictor', methods=['GET','POST'])
+
+@app.route('/COVID_Predictor', methods=['GET', 'POST'])
 def COVID_Predictor():
     if request.method == 'POST':
         # Check if the request contains JSON data
         if request.is_json:
-            data = dict(request.form)
+
+            data = request.get_json()
             result = process_input(data)
             return jsonify(result)
         else:
@@ -58,12 +61,13 @@ def COVID_Predictor():
     else:
         # If it's a GET request, render an HTML page
         return render_template("COVID_Predictor.html")
-
+    
 def process_input(input_data):
     # Process input using machine learning model
     # Return the result
     result = "The Loop Works"
     return {result}
+
     
 
 #################################################################################################################

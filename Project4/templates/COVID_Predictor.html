@@ -249,24 +249,34 @@
                             formData[radio.name] = radio.value;
                         }
                     });
+
+                    // Convert form data to JSON
+                    var formDataJson;
+                    try {
+                        formDataJson = JSON.stringify(formData);
+                    } catch (e) {
+                        console.error("Error converting form data to JSON:", e);
+                        return; // Exit early if conversion fails
+                    }
                     
-                    // Send form data via AJAX
-                    $.ajax({
-                        type: "POST",
-                        url: "Covid_predictor", // Replace with your endpoint
-                        data: formData,
-                        success: function(response) {
-                            
-                            // Handle successful response
-                            console.log("Response from server:", response);
-                            // Do whatever you need to do with the response data
-                        },
-                        error: function(xhr, status, error) {
-                            // Handle error
-                            console.error("Error:", error);
-                            // Handle errors here
-                        }
+                    // Send form data to Flask backend
+                    fetch("/COVID_Predictor", {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle successful response
+                        console.log("Response from server:", data);
+                        // Update frontend with prediction result
+                        // For example, display the result on the page
+                    })
+                    .catch(error => {
+                        // Handle error
+                        console.error("Error:", error);
+                        // Handle errors here
                     });
+                            
                     
                 
                     //////////////////////////////////////////////////////////////////
