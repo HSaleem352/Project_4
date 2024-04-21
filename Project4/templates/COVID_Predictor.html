@@ -235,6 +235,46 @@
                 if (checkAllQuestionsAnswered()) {
                     // All questions answered, proceed with prediction
                     console.log("All questions answered. Proceeding with prediction...");
+                    
+                    //////////////////////////////////////////////////////////////////
+                    //////////////////////////////////////////////////////////////////
+                   
+                    // Collect form data
+                    var formData = {};
+                    selects.forEach(function(select) {
+                        formData[select.name] = select.value;
+                    });
+                    radios.forEach(function(radio) {
+                        if (radio.checked) {
+                            formData[radio.name] = radio.value;
+                        }
+                    });
+                    
+                    // Send form data via AJAX
+                    $.ajax({
+                        type: "POST",
+                        url: "Covid_predictor", // Replace with your endpoint
+                        data: formData,
+                        success: function(response) {
+                            // Handle successful response
+                            console.log("Response from server:", response);
+                            // Do whatever you need to do with the response data
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error
+                            console.error("Error:", error);
+                            // Handle errors here
+                        }
+                    });
+                    
+                    
+                   
+
+                    //////////////////////////////////////////////////////////////////
+                    //////////////////////////////////////////////////////////////////
+                   
+                    
+                    // Reset form highlights and error message
                     document.getElementById("errorMessage").style.display = "none"; // Hide error message
                     selects.forEach(function(select) {
                         select.classList.remove("unanswered");
@@ -288,5 +328,7 @@
             document.getElementById("predictButton").addEventListener("click", handlePredictButtonClick);
         });
     </script>
+
+    <script src="{{ url_for('static', filename='js/covid_predictor.js') }}"></script>
 </body>
 </html>

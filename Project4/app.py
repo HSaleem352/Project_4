@@ -62,7 +62,8 @@ def COVID_Predictor():
 def process_input(input_data):
     # Process input using machine learning model
     # Return the result
-    return {'result': input_data}
+    result = "The Loop Works"
+    return {result}
     
 
 #################################################################################################################
