@@ -291,9 +291,10 @@
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(formData),
+                    dataType: "json",
                     success: function(response) {
                         // Display the processed result
-                        console.log("It Works")
+                        console.log(response)
                     },
                     error: function(error) {
                         console.error('Error:', error);

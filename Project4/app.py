@@ -54,16 +54,21 @@ def COVID_Predictor():
         if request.is_json:
             data = request.json
             result = process_input(data)
-            return jsonify(result)
+            return result
         else:
             return jsonify({'error': 'Request must be JSON'}), 400
+        
+        
+        
+def process_input(data):
+    # Process the input data here
+    # For example, you can perform some prediction or analysis based on the data
+    
+    # For demonstration purposes, let's just return the received data
+    return data
     
     
-def process_input(input_data):
-    # Process input using machine learning model
-    # Return the result
-    result = {'result': "The Loop Works"}
-    return {result}
+
 
 @app.route('/COVID_Predictor', methods=['GET'])
 def COVID_page():
