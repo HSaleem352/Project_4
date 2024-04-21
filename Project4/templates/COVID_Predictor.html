@@ -287,7 +287,7 @@
                     console.log(JSON.stringify(formData))
                     
                     $.ajax({
-                    url: '/COVID_Predictor',
+                    url: '/predictor',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(formData),
@@ -334,28 +334,7 @@
             document.getElementById("predictButton").addEventListener("click", handlePredictButtonClick);
             
 
-            // function sendData() {
-            // $(document).ready(function() {
-            // $('#predictButton').click(function() {
-            //     console.log(JSON.stringify(formData))
-                
-            //     $.ajax({
-            //     url: '/COVID_Predictor',
-            //     type: 'POST',
-            //     contentType: 'application/json',
-            //     data: JSON.stringify(formData),
-            //     success: function(response) {
-            //         // Display the processed result
-            //         console.log("It Works")
-            //     },
-            //     error: function(error) {
-            //         console.error('Error:', error);
-            //     }
-            //     });
-
-            //     });
-            //     });
-            // };   
+            
         
 
         });

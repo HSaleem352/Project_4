@@ -47,27 +47,27 @@ def Limitations_References():
 #################################################################################################################
 
 
-@app.route('/COVID_Predictor', methods=['GET', 'POST'])
+@app.route('/predictor', methods=['POST'])
 def COVID_Predictor():
-    if request.method == 'POST':
+    
         # Check if the request contains JSON data
         if request.is_json:
-
             data = request.json
             result = process_input(data)
             return jsonify(result)
         else:
             return jsonify({'error': 'Request must be JSON'}), 400
-    elif request.method == 'GET':
-        # If it's a GET request, render an HTML page
-        return render_template("COVID_Predictor.html")
+    
     
 def process_input(input_data):
     # Process input using machine learning model
     # Return the result
-    result = "The Loop Works"
+    result = {'result': "The Loop Works"}
     return {result}
 
+@app.route('/COVID_Predictor', methods=['GET'])
+def COVID_page():
+    return render_template("COVID_Predictor.html")
     
 
 #################################################################################################################
