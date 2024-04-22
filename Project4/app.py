@@ -103,11 +103,12 @@ def process_input(data_dict):
 
     dean_model = predict_model_dn(series)
     shan_model = predict_model_sh(series)
+    alex_model = preprocess_inp_afr(series)
 
-    avg_model = (dean_model + shan_model) / 2
+    avg_model = (dean_model + shan_model + alex_model) / 2
 
-    model = {'dean':str(round(dean_model, 2)), 'shan': str(round(shan_model, 2)), 'Average': str(round(avg_model, 2))}
-    #users = [{'predicted_risk': str(round(p, 2)), 'std': -1}]
+    model = {'dean':str(round(dean_model, 2)), 'shan': str(round(shan_model, 2)), 'alex_model': str(round(alex_model, 2)), 'Average': str(round(avg_model, 2))}
+    
     return jsonify(model)
 
 ################ Deans model
