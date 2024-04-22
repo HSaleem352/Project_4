@@ -150,8 +150,8 @@ def preprocess_inp_afr(data):
 
 
 def predict_model_afr(data):
-    x = preprocess_inp_dn(data)
-    model = tf.keras.models.load_model("Project4/assets/dn/model_afr.h5")
+    x = preprocess_inp_afr(data)
+    model = tf.keras.models.load_model("Project4/assets/afr/model_afr.h5")
     p = model.predict(x, verbose=0)[0][0]
     return p
 
