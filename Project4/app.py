@@ -72,8 +72,6 @@ def process_input(data_dict):
     _yesno_map = {"yes": 1, "no": 0}
     _smoking_map = {"Current or Former": 1, "Never": 0}
 
-    # # Load JSON data into a Python dictionary
-    # data_dict = json.loads(data)
 
     # Deriving values based on the provided template
     der_age_trunc = float(data_dict['age'])
