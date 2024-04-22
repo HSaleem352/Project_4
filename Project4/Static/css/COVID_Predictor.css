@@ -110,3 +110,15 @@ body {
     text-align: center; /* Center-align the text */
     color: red;
 }
+
+
+/* Welcom Modal */
+.animate__animated.animate__zoomIn {
+    animation-duration: 1s;
+}
+
+/* Prediction Modal */
+.animate__animated.animate__rotateIn {
+    animation-duration: 1s;
+}
+

@@ -31,9 +31,9 @@
         </div>
     </nav>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
+    <!-- Welcome Modal -->
+    <div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-scale">
         <div class="modal-content">
             <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Welcome to COVID-19 Risk Wizard!</h5>
@@ -51,7 +51,7 @@
     <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
     <!-- Prediction Result Modal -->
     <div class="modal fade" id="outputModal" tabindex="-1" role="dialog" aria-labelledby="outputModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-rotate" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="outputModalLabel">Prediction Output</h5>
@@ -197,6 +197,8 @@
             <p id="errorMessage" class="error-message">Please answer all questions before predicting.</p>
         </div>
     </div>
+    <!-- Animation -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <!-- Popper.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
     <!-- jQuery library -->
@@ -207,7 +209,7 @@
     <!-- JavaScript -->
     <script>
         $(document).ready(function() {
-            $('#exampleModal').modal('show'); // Show the modal when the page loads
+            $('#welcomeModal').modal('show'); // Show the modal when the page loads
         });
     </script>
     <script>
@@ -360,16 +362,26 @@
 
             // Add event listener to predict button
             document.getElementById("predictButton").addEventListener("click", handlePredictButtonClick);
-            
-
-            
-        
-
+        });
+    </script>
+    <script>
+        // Modal Animations
+        $('#welcomeModal').on('shown.bs.modal', function () {
+            $('.modal-scale').addClass('animate__animated animate__zoomIn');
         });
 
-        
+        $('#outputModal').on('shown.bs.modal', function () {
+            $('.modal-rotate').addClass('animate__animated animate__rotateIn');
+        });
 
-        
+        // Remove fade class when the modals are shown
+        $('#welcomeModal').on('show.bs.modal', function (e) {
+            $(this).removeClass('fade');
+        });
+
+        $('#outputModal').on('show.bs.modal', function (e) {
+            $(this).removeClass('fade');
+        });
     </script>
 </body>
 </html>
