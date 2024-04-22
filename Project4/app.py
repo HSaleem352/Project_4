@@ -130,6 +130,11 @@ def predict_model_dn(data):
     model = tf.keras.models.load_model('Project4/assets/dn/model.h5')
     p = model.predict(x, verbose=0)[0][0]
     return p
+
+############### Alejandra's Model
+
+def preprocess_inp_afr(data):
+    
     
 ################################################################################################
 
