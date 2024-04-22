@@ -103,15 +103,18 @@ def process_input(data_dict):
 
     dean_model = predict_model_dn(series)
     shan_model = predict_model_sh(series)
-    alex_model = preprocess_inp_afr(series)
+    alex_model = predict_model_afr(series)
 
-    avg_model = (dean_model + shan_model) / 2.0
+    avg_model = (dean_model + shan_model + alex_model) / 3.0
 
-    model = {'dean':str(round(dean_model, 2)), 'shan': str(round(shan_model, 2)), 'Average': str(round(avg_model, 2)), 'alex_model': str(alex_model)}
+    #model = {'dean':str(round(dean_model, 2)), 'shan': str(round(shan_model, 2)), 'Average': str(round(avg_model, 2)), 'alex_model': str(alex_model)}
+    output_result = {'Average': str(round(avg_model, 2))}
     #'alex_model': str(round(alex_model, 2))
     
     
-    return jsonify(model)
+    return jsonify(output_result)
+
+####################################### Model Functions ##########################################
 
 ################ Deans model
 
