@@ -66,7 +66,6 @@ def COVID_Predictor():
         
         
 def process_input(data_dict):
-    # Process the input data here
     
     # Mapping for data transformation
     _yesno_map = {"yes": 1, "no": 0}
@@ -104,7 +103,7 @@ def process_input(data_dict):
 
     p = predict_model_dn(series)
     dmodel = {'value':str(round(p, 2))}
-    users = [{'predicted_risk': str(round(p, 2)), 'std': -1}]
+    #users = [{'predicted_risk': str(round(p, 2)), 'std': -1}]
     return jsonify(dmodel)
 
 ################ Deans model
