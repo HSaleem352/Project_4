@@ -49,23 +49,20 @@
     </div>
 
     <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
-    <!-- Modal -->
+    <!-- Prediction Result Modal -->
     <div class="modal fade" id="outputModal" tabindex="-1" role="dialog" aria-labelledby="outputModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="outputModalLabel">Response Output</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="outputModalLabel">Prediction Output</h5>
+                </div>
+                <div class="modal-body">
+                    <pre id="output-popup"></pre>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
-            <div class="modal-body">
-            <pre id="output-popup"></pre>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
         </div>
     </div>
 <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
@@ -315,8 +312,14 @@
                     data: JSON.stringify(formData),
                     dataType: "json",
                     success: function(response) {
+
+                        // Extract the response value
+                        var responseValue = response.value;
+                        // Calculate the percentage value
+                        var percentageValue = responseValue * 100;
+
                         // Display the processed result
-                        $('#output-popup').text(JSON.stringify(response));
+                        $('#output-popup').text("This individual has an estimated risk of " + percentageValue + "% for moderate-to-severe COVID-19.");
                         $('#outputModal').modal('show');
                         console.log(response.value)
                     },
