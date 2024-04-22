@@ -110,9 +110,9 @@ def process_input(data_dict):
 ################ Deans model
 
 def preprocess_inp_dn(data):
-    with open('Project4/assets/dn/ohe.pkl', 'rb') as f:
+    with open('assets/dn/ohe.pkl', 'rb') as f:
         one_hot_enc = pickle.load(f)
-    with open('Project4/assets/dn/scaler.pkl', 'rb') as f:
+    with open('assets/dn/scaler.pkl', 'rb') as f:
         standard_scaler = pickle.load(f)
     multi_categorical = ['der_race_v2', 'der_smoking2', 'urban_rural', 'der_cancer_status_v4']
     binary = ['der_obesity', 'der_cancertr_none', 'der_dm2', 'der_card', 'der_pulm', 'der_renal']
@@ -127,7 +127,7 @@ def preprocess_inp_dn(data):
 
 def predict_model_dn(data):
     x = preprocess_inp_dn(data)
-    model = tf.keras.models.load_model('Project4/assets/dn/model.h5')
+    model = tf.keras.models.load_model('assets/dn/model.h5')
     p = model.predict(x, verbose=0)[0][0]
     return p
     
