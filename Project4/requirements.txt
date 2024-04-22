@@ -4,3 +4,6 @@ SQLAlchemy
 gunicorn
 requests
 psycopg2-binary
+tenserflowjs
+h5py
+flask-cors
