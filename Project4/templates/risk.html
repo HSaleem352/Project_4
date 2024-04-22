@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/style_DN.css">
+    <title>Breast Cancer Research</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- D3 -->
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <!-- plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- submit button -->
+    <script src="{{ url_for('static', filename='js/risk.js') }}"></script>
+</head>
+
+<body style="background-color:white">
+
+    <!-- Title & Navbar -->
+    <nav class="navbar navbar-dark bg-dark" aria-label="First navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Risk Assesment Tool</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbars_HS" aria-controls="navbars_HS" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+            <div class="navbar-collapse collapse" id="navbars_HS">
+                <ul class="navbar-nav me-auto mb-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/OurTeam">Our Team</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Limitations_References">Limitations & References</a>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <form>
+        <!-- Age -->
+        <div class="form-group">
+            <label for="age-inp">Age</label>
+            <input type="number" class="form-control" id="age-inp" placeholder="24-90">
+        </div>
+
+        <!-- Obesity -->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="obesity-check">
+            <label class="form-check-label" for="obesity-check">Obesity</label>
+        </div>
+
+        <!-- Smoking -->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="smoking-check">
+            <label class="form-check-label" for="smoking-check">History of Smoking</label>
+        </div>
+
+
+        <!-- Race -->
+        <div class="form-group">
+            <label for="race-select">Race</label>
+            <select class="form-control" id="race-select">
+  <option value="Non-Hispanic White">White</option>
+  <option value="Non-Hispanic Black">Black</option>
+  <option value="Hispanic">Hispanic</option>
+  <option value="Non-Hispanic AAPI">AAPI</option>
+  <option value="Other">Other</option>
+  <option>Other</option>
+</select>
+        </div>
+
+
+        <!-- Area Housing Type -->
+        <div class="form-group">
+            <label for="area-select">Housing Area Type</label>
+            <select class="form-control" id="area-select">
+  <option>Suburban</option>
+  <option>Urban</option>
+  <option>Rural</option>
+</select>
+        </div>
+
+        <h1>Breast Cancer</h1>
+        <!-- Cancer treatment -->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="treatment-check">
+            <label class="form-check-label" for="treatment-check">No cancer treatment in the 3 months prior to COVID-19
+  </label>
+        </div>
+
+
+        <!-- cancer status -->
+        <div class="form-group">
+            <label for="status-select">Status of Breast Cancer</label>
+            <select class="form-control" id="status-select">
+            <option value="Remission or no evidence of disease, <5 years">Remission or no evidence of disease, less than 5 years</option>
+            <option value="Remission or no evidence of disease, >5 years">Remission or no evidence of disease, more than 5 years</option>
+            <option>Active and responding</option>
+            <option>Active and stable</option>  
+            <option>Active and progressing</option>  
+            <option>Unknown</option>  
+</select>
+        </div>
+
+
+        <h1>Comorbidities</h1>
+        <!-- diabetes -->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="diabetes-check">
+            <label class="form-check-label" for="diabetes-check">Diabetes</label>
+        </div>
+
+
+        <!-- Cardiovascular disease -->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="cardiovascular-check">
+            <label class="form-check-label" for="cardiovascular-check">Cardiovascular disease (CAD, CHF, Afib, arrhythmia NOS, PVD, CVA, cardiac disease NOS)</label>
+        </div>
+
+
+        <!-- pulmonary disease -->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="pulmonary-check">
+            <label class="form-check-label" for="pulmonary-check">Pulmonary (lung) disease</label>
+        </div>
+
+
+        <!-- renal disease -->
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="renal-check">
+            <label class="form-check-label" for="renal-check">Renal (kidney) disease</label>
+        </div>
+
+        <input type="button" id="btnSub" size="10" onclick="fetchRisk()" value="Submit"/>
+    </form>
+
+    <p id="risk"></p>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
