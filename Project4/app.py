@@ -477,7 +477,7 @@ def preprocess_inp_dn(data):
 
 def predict_model_dn(data):
     x = preprocess_inp_dn(data)
-    model = tf.keras.models.load_model('assets/dn/model.h5')
+    model = tf.keras.models.load_model('assets/dn/model.keras')
     p = model.predict(x, verbose=0)[0][0]
     return p
 
