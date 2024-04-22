@@ -103,8 +103,9 @@ def process_input(data_dict):
 
 
     p = predict_model_dn(series)
+    dmodel = {'value':str(round(p, 2))}
     users = [{'predicted_risk': str(round(p, 2)), 'std': -1}]
-    return jsonify(users)
+    return jsonify(dmodel)
 
 ################ Deans model
 

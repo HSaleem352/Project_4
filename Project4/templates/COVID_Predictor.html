@@ -48,6 +48,28 @@
         </div>
     </div>
 
+    <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+    <!-- Modal -->
+    <div class="modal fade" id="outputModal" tabindex="-1" role="dialog" aria-labelledby="outputModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="outputModalLabel">Response Output</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            <pre id="output-popup"></pre>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+<!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+
     <div class="instruction">
         <p>Explanation of how to fill in the quastionnaire...</p>
     </div>
@@ -284,7 +306,7 @@
 //////////////////////////////////////////////////////////////////
 
                     // Send Data
-                    console.log(JSON.stringify(formData))
+                    // console.log(JSON.stringify(formData))
                     
                     $.ajax({
                     url: '/predictor',
@@ -294,7 +316,9 @@
                     dataType: "json",
                     success: function(response) {
                         // Display the processed result
-                        console.log(response)
+                        $('#output-popup').text(JSON.stringify(response));
+                        $('#outputModal').modal('show');
+                        console.log(response.value)
                     },
                     error: function(error) {
                         console.error('Error:', error);
