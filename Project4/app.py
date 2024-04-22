@@ -120,7 +120,7 @@ def preprocess_inp_dn(data):
     continuous = ['der_age_trunc']
 
     x_continous = standard_scaler.transform(data[continuous].values.reshape(1, -1))
-    x_categorical = one_hot_enc.transform(data[multi_categorical + binary].values.reshape(1, -1)).todense()
+    x_categorical = one_hot_enc.transform(data[multi_categorical + binary].values.reshape(1, -1))
     x = np.concatenate([x_continous, x_categorical], axis=-1)
 
     return x
@@ -128,7 +128,7 @@ def preprocess_inp_dn(data):
 
 def predict_model_dn(data):
     x = preprocess_inp_dn(data)
-    model = tf.keras.models.load_model('assets/dn/model.h5')
+    model = tf.keras.models.load_model('Project4/assets/dn/model.h5')
     p = model.predict(x, verbose=0)[0][0]
     return p
     
