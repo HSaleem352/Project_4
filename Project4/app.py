@@ -14,6 +14,7 @@ import h5py
 from flask_cors import CORS
 import pickle
 import numpy as np
+import json
 
 
 
@@ -56,6 +57,7 @@ def COVID_Predictor():
         # Check if the request contains JSON data
         if request.is_json:
             data = request.json
+
             result = process_input(data)
             return result
         else:
@@ -63,14 +65,74 @@ def COVID_Predictor():
         
         
         
-def process_input(data):
+def process_input(data_dict):
     # Process the input data here
-    # For example, you can perform some prediction or analysis based on the data
     
-    # For demonstration purposes, let's just return the received data
-    return data
+    # Mapping for data transformation
+    _yesno_map = {"yes": 1, "no": 0}
+    _smoking_map = {"Current or Former": 1, "Never": 0}
+
+    # # Load JSON data into a Python dictionary
+    # data_dict = json.loads(data)
+
+    # Deriving values based on the provided template
+    der_age_trunc = float(data_dict['age'])
+    der_obesity = _yesno_map[data_dict['Obesity']]
+    der_smoking2 = _smoking_map[data_dict['Smoking Status']]
+    der_race_v2 = data_dict['Race/Ethnicity']
+    urban_rural = data_dict['Residential Area Type']
+    der_cancertr_none = _yesno_map[data_dict['cancer treatment']]
+    der_cancer_status_v4 = data_dict['Cancer Status']
+    der_dm2 = _yesno_map[data_dict['Diabetes Mellitus']]
+    der_card = _yesno_map[data_dict['Cardiovascular Comorbidity']]
+    der_pulm = _yesno_map[data_dict['Pulmonary Comorbidities']]
+    der_renal = _yesno_map[data_dict['Renal Comorbidities']]
+
+    # Constructing the Pandas Series
+    series = pd.Series({
+        'der_age_trunc': der_age_trunc,
+        'der_obesity': der_obesity,
+        'der_smoking2': der_smoking2,
+        'der_race_v2': der_race_v2,
+        'urban_rural': urban_rural,
+        'der_cancertr_none': der_cancertr_none,
+        'der_cancer_status_v4': der_cancer_status_v4,
+        'der_dm2': der_dm2,
+        'der_card': der_card,
+        'der_pulm': der_pulm,
+        'der_renal': der_renal
+    })
+
+
+    p = predict_model_dn(series)
+    users = [{'predicted_risk': str(round(p, 2)), 'std': -1}]
+    return jsonify(users)
+
+################ Deans model
+
+def preprocess_inp_dn(data):
+    with open('Project4/assets/dn/ohe.pkl', 'rb') as f:
+        one_hot_enc = pickle.load(f)
+    with open('Project4/assets/dn/scaler.pkl', 'rb') as f:
+        standard_scaler = pickle.load(f)
+    multi_categorical = ['der_race_v2', 'der_smoking2', 'urban_rural', 'der_cancer_status_v4']
+    binary = ['der_obesity', 'der_cancertr_none', 'der_dm2', 'der_card', 'der_pulm', 'der_renal']
+    continuous = ['der_age_trunc']
+
+    x_continous = standard_scaler.transform(data[continuous].values.reshape(1, -1))
+    x_categorical = one_hot_enc.transform(data[multi_categorical + binary].values.reshape(1, -1)).todense()
+    x = np.concatenate([x_continous, x_categorical], axis=-1)
+
+    return x
+
+
+def predict_model_dn(data):
+    x = preprocess_inp_dn(data)
+    model = tf.keras.models.load_model('assets/dn/model.h5')
+    p = model.predict(x, verbose=0)[0][0]
+    return p
     
-    
+################################################################################################
 
 
 @app.route('/COVID_Predictor', methods=['GET'])
@@ -464,54 +526,32 @@ def age_distribution_by_covid_severity():
 #################################################################################################################
 
 
-@app.route('/risk')
-def risk_assessment_page():
-    return render_template("risk.html")
+# @app.route('/risk')
+# def risk_assessment_page():
+#     return render_template("risk.html")
 
 
-@app.route("/api/v1/risk_query/<age>/<obesity>/<smoking>/<race>/<area>/<treatment>/<status>/<diabetes>/<cardiovascular>/<pulmonary>/<renal>")
-def risk_assessment(age, obesity, smoking, race, area, treatment, status, diabetes, cardiovascular, pulmonary, renal):
-    _yesno_map = {'false': 'No', 'true': 'Yes'}
-    _smoking_map = {'false': 'Never', 'true': 'Current or Former'}
-    data = pd.Series(
-        {'der_age_trunc': float(age),
-         'der_obesity': _yesno_map[obesity],
-         'der_smoking2': _smoking_map[smoking],
-         'der_race_v2': race,
-         'urban_rural': area,
-         'der_cancertr_none': _yesno_map[treatment],
-         'der_cancer_status_v4': status,
-         'der_dm2': _yesno_map[diabetes],
-         'der_card': _yesno_map[cardiovascular],
-         'der_pulm': _yesno_map[pulmonary],
-         'der_renal': _yesno_map[renal]
-         })
-    p = predict_model_dn(data)
-    users = [{'predicted_risk': str(round(p, 2)), 'std': -1}]
-    return jsonify(users)
+# @app.route("/api/v1/risk_query/<age>/<obesity>/<smoking>/<race>/<area>/<treatment>/<status>/<diabetes>/<cardiovascular>/<pulmonary>/<renal>")
+# def risk_assessment(age, obesity, smoking, race, area, treatment, status, diabetes, cardiovascular, pulmonary, renal):
+#     _yesno_map = {'false': 'No', 'true': 'Yes'}
+#     _smoking_map = {'false': 'Never', 'true': 'Current or Former'}
+    # data = pd.Series(
+    #     {'der_age_trunc': float(age),
+    #      'der_obesity': _yesno_map[obesity],
+    #      'der_smoking2': _smoking_map[smoking],
+    #      'der_race_v2': race,
+    #      'urban_rural': area,
+    #      'der_cancertr_none': _yesno_map[treatment],
+    #      'der_cancer_status_v4': status,
+    #      'der_dm2': _yesno_map[diabetes],
+    #      'der_card': _yesno_map[cardiovascular],
+    #      'der_pulm': _yesno_map[pulmonary],
+    #      'der_renal': _yesno_map[renal]
+    #      })
+    
 
 
-def preprocess_inp_dn(data):
-    with open('assets/dn/ohe.pkl', 'rb') as f:
-        one_hot_enc = pickle.load(f)
-    with open('assets/dn/scaler.pkl', 'rb') as f:
-        standard_scaler = pickle.load(f)
-    multi_categorical = ['der_race_v2', 'der_smoking2', 'urban_rural', 'der_cancer_status_v4']
-    binary = ['der_obesity', 'der_cancertr_none', 'der_dm2', 'der_card', 'der_pulm', 'der_renal']
-    continuous = ['der_age_trunc']
 
-    x_continous = standard_scaler.transform(data[continuous].values.reshape(1, -1))
-    x_categorical = one_hot_enc.transform(data[multi_categorical + binary].values.reshape(1, -1)).todense()
-    x = np.concatenate([x_continous, x_categorical], axis=-1)
-
-    return x
-
-
-def predict_model_dn(data):
-    x = preprocess_inp_dn(data)
-    model = tf.keras.models.load_model('assets/dn/model.h5')
-    p = model.predict(x, verbose=0)[0][0]
-    return p
 
 
 if __name__ == '__main__':
