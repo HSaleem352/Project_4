@@ -10,7 +10,6 @@ from sqlalchemy import create_engine, text, inspect, func
 from flask import Flask, jsonify, render_template
 from flask import request
 import tensorflow as tf
-import h5py
 from flask_cors import CORS
 import pickle
 import numpy as np
@@ -100,11 +99,16 @@ def process_input(data_dict):
         'der_renal': der_renal
     })
 
+    ####### Calling Model Functions
 
-    p = predict_model_dn(series)
-    dmodel = {'value':str(round(p, 2))}
+    dean_model = predict_model_dn(series)
+    shan_model = predict_model_sh(series)
+
+    avg_model = (dean_model + shan_model) / 2
+
+    model = {'dean':str(round(dean_model, 2)), 'shan': str(round(shan_model, 2)), 'Average': str(round(avg_model, 2))}
     #users = [{'predicted_risk': str(round(p, 2)), 'std': -1}]
-    return jsonify(dmodel)
+    return jsonify(model)
 
 ################ Deans model
 
