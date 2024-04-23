@@ -599,34 +599,6 @@ def age_distribution_by_covid_severity():
 #################################################################################################################
 
 
-# @app.route('/risk')
-# def risk_assessment_page():
-#     return render_template("risk.html")
-
-
-# @app.route("/api/v1/risk_query/<age>/<obesity>/<smoking>/<race>/<area>/<treatment>/<status>/<diabetes>/<cardiovascular>/<pulmonary>/<renal>")
-# def risk_assessment(age, obesity, smoking, race, area, treatment, status, diabetes, cardiovascular, pulmonary, renal):
-#     _yesno_map = {'false': 'No', 'true': 'Yes'}
-#     _smoking_map = {'false': 'Never', 'true': 'Current or Former'}
-    # data = pd.Series(
-    #     {'der_age_trunc': float(age),
-    #      'der_obesity': _yesno_map[obesity],
-    #      'der_smoking2': _smoking_map[smoking],
-    #      'der_race_v2': race,
-    #      'urban_rural': area,
-    #      'der_cancertr_none': _yesno_map[treatment],
-    #      'der_cancer_status_v4': status,
-    #      'der_dm2': _yesno_map[diabetes],
-    #      'der_card': _yesno_map[cardiovascular],
-    #      'der_pulm': _yesno_map[pulmonary],
-    #      'der_renal': _yesno_map[renal]
-    #      })
-    
-
-
-
-
-
 if __name__ == '__main__':
     app.run(debug=True)
 
