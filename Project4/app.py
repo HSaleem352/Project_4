@@ -108,7 +108,7 @@ def process_input(data_dict):
     avg_model = (dean_model + shan_model + alex_model) / 3.0
 
     #model = {'dean':str(round(dean_model, 2)), 'shan': str(round(shan_model, 2)), 'Average': str(round(avg_model, 2)), 'alex_model': str(alex_model)}
-    output_result = {'Average': str(round(avg_model, 2))}
+    output_result = {'value': str(round(avg_model, 2))}
     #'alex_model': str(round(alex_model, 2))
     
     
