@@ -50,6 +50,19 @@ def Limitations_References():
 #################################################################################################################
 
 
+##################################################################################################
+####################################    Covid Page      ##########################################
+##################################################################################################
+
+@app.route('/COVID_Predictor', methods=['GET'])
+def COVID_page():
+    return render_template("COVID_Predictor.html")
+
+
+##################################################################################################
+################################       Ajax Communication      ###################################
+##################################################################################################
+
 @app.route('/predictor', methods=['POST'])
 def COVID_Predictor():
     
@@ -61,7 +74,6 @@ def COVID_Predictor():
             return result
         else:
             return jsonify({'error': 'Request must be JSON'}), 400
-        
         
         
 def process_input(data_dict):
@@ -104,19 +116,19 @@ def process_input(data_dict):
     dean_model = predict_model_dn(series)
     shan_model = predict_model_sh(series)
     alex_model = predict_model_afr(series)
+    fozia_model = predict_model_fz(series)
 
-    avg_model = (dean_model + shan_model + alex_model) / 3.0
+    avg_model = (dean_model + shan_model + alex_model + fozia_model) / 4.0
 
-    #model = {'dean':str(round(dean_model, 2)), 'shan': str(round(shan_model, 2)), 'Average': str(round(avg_model, 2)), 'alex_model': str(alex_model)}
-    output_result = {'value': str(round(avg_model, 2))}
-    #'alex_model': str(round(alex_model, 2))
-    
+    output_result = {'value': str(round(avg_model, 2))}    
     
     return jsonify(output_result)
 
+##################################################################################################
 ####################################### Model Functions ##########################################
+##################################################################################################
 
-################ Deans model
+################ Dean's model
 
 def preprocess_inp_dn(data):
     with open('Project4/assets/dn/ohe.pkl', 'rb') as f:
@@ -143,6 +155,7 @@ def predict_model_dn(data):
 ################################################################################################
 
 ################ Shan's model
+
 def preprocess_inp_sh(data):
     with open('Project4/assets/shan/ohe.pkl', 'rb') as f:
         one_hot_enc = pickle.load(f)
@@ -193,24 +206,33 @@ def predict_model_afr(data):
 
 ################################################################################################
 
+############### Fozia's Model
+
+def preprocess_fz(raw_inp):
+    categorical_cols = ['der_obesity', 'der_race_v2', 'der_smoking2', 'urban_rural', 'der_cancertr_none', 'der_cancer_status_v4', 'der_dm2', 'der_card', 'der_pulm', 'der_renal']
+    numeric_cols = ['der_age_trunc']
+
+    with open('assets/fz/ohe.pkl', 'rb') as f:
+      encoder = pickle.load(f)
+
+    with open('assets/fz/mm.pkl', 'rb') as f:
+      scaler = pickle.load(f)
+
+    categorical = encoder.transform(raw_inp[categorical_cols].values.reshape(1, -1))
+    numeric = scaler.transform(raw_inp[numeric_cols].values.reshape(-1, 1))
+
+    x = np.concatenate([numeric, categorical], axis=-1)
+    return x
 
 
+def predict_model_fz(inp):
 
+    # Load the model from the file
+    with open('assets/fz/model.pkl', 'rb') as f:
+        loaded_model = pickle.load(f)
 
-
-
-
-
-
-
-
-
-
-## ############################# Covid Page
-
-@app.route('/COVID_Predictor', methods=['GET'])
-def COVID_page():
-    return render_template("COVID_Predictor.html")
+    x = preprocess_fz(inp)
+    return loaded_model.predict_proba(x)[0][1]
     
 
 #################################################################################################################
@@ -597,33 +619,6 @@ def age_distribution_by_covid_severity():
 #################################################################################################################
 ##                                                  Debug                                                      ##
 #################################################################################################################
-
-
-def preprocess_fz(raw_inp):
-    categorical_cols = ['der_obesity', 'der_race_v2', 'der_smoking2', 'urban_rural', 'der_cancertr_none', 'der_cancer_status_v4', 'der_dm2', 'der_card', 'der_pulm', 'der_renal']
-    numeric_cols = ['der_age_trunc']
-
-    with open('assets/fz/ohe.pkl', 'rb') as f:
-      encoder = pickle.load(f)
-
-    with open('assets/fz/mm.pkl', 'rb') as f:
-      scaler = pickle.load(f)
-
-    categorical = encoder.transform(raw_inp[categorical_cols].values.reshape(1, -1))
-    numeric = scaler.transform(raw_inp[numeric_cols].values.reshape(-1, 1))
-
-    x = np.concatenate([numeric, categorical], axis=-1)
-    return x
-
-
-def predict_model_fz(inp):
-
-    # Load the model from the file
-    with open('assets/fz/model.pkl', 'rb') as f:
-        loaded_model = pickle.load(f)
-
-    x = preprocess_fz(inp)
-    return loaded_model.predict_proba(x)[0][1]
 
 
 if __name__ == '__main__':
