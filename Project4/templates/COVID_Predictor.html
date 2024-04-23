@@ -341,19 +341,16 @@
                     dataType: "json",
                     success: function(response) {
 
-                        // Extract the response value
-                        var responseValue = response.value;
-                        // Calculate the percentage value
-                        var percentageValue = responseValue * 100;
+                        console.log("Response received:", response.Average);
 
-                        // Display the processed result
-                        $('#output-popup').text("This individual has an estimated risk of " + percentageValue + "% for moderate-to-severe COVID-19.");
+                       
+                        $('#output-popup').text("This individual has an estimated risk of " + response + "% for moderate-to-severe COVID-19.");
                         $('#outputModal').modal('show');
-                        console.log(response.value)
+           
                     },
-                    error: function(error) {
+                    error: function(xhr, status, error) {
                         console.error('Error:', error);
-                    }
+                        }
                     });
 
                     

@@ -144,9 +144,9 @@ def predict_model_dn(data):
 
 ################ Shan's model
 def preprocess_inp_sh(data):
-    with open('Project4/assets/shan/ohe.pkl', 'rb') as f:
+    with open('assets/shan/ohe.pkl', 'rb') as f:
         one_hot_enc = pickle.load(f)
-    with open('Project4/assets/shan/scaler.pkl', 'rb') as f:
+    with open('assets/shan/scaler.pkl', 'rb') as f:
         standard_scaler = pickle.load(f)
     multi_categorical = ['der_race_v2', 'der_smoking2', 'urban_rural', 'der_cancer_status_v4']
     binary = ['der_obesity', 'der_cancertr_none', 'der_dm2', 'der_card', 'der_pulm', 'der_renal']
@@ -161,7 +161,7 @@ def preprocess_inp_sh(data):
 
 def predict_model_sh(data):
     x = preprocess_inp_sh(data)
-    model = tf.keras.models.load_model('Project4/assets/shan/model_shan.h5')
+    model = tf.keras.models.load_model('assets/shan/model_shan.h5')
     p = model.predict(x, verbose=0)[0][0]
     return p
 
@@ -170,9 +170,9 @@ def predict_model_sh(data):
 ############### Alejandra's Model
 
 def preprocess_inp_afr(data):
-    with open('Project4/assets/afr/ohe.pkl', 'rb') as f:
+    with open('assets/afr/ohe.pkl', 'rb') as f:
         one_hot_enc = pickle.load(f)
-    with open('Project4/assets/afr/scaler.pkl', 'rb') as f:
+    with open('assets/afr/scaler.pkl', 'rb') as f:
         standard_scaler = pickle.load(f)
     multi_categorical = ['der_race_v2', 'der_smoking2', 'urban_rural', 'der_cancer_status_v4']
     binary = ['der_obesity', 'der_cancertr_none', 'der_dm2', 'der_card', 'der_pulm', 'der_renal']
@@ -187,7 +187,7 @@ def preprocess_inp_afr(data):
 
 def predict_model_afr(data):
     x = preprocess_inp_afr(data)
-    model = tf.keras.models.load_model("Project4/assets/afr/model_afr.h5")
+    model = tf.keras.models.load_model("assets/afr/model_afr.h5")
     p = model.predict(x, verbose=0)[0][0]
     return p
 
