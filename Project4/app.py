@@ -10,7 +10,6 @@ from sqlalchemy import create_engine, text, inspect, func
 from flask import Flask, jsonify, render_template
 from flask import request
 import tensorflow as tf
-import h5py
 from flask_cors import CORS
 import pickle
 import numpy as np
@@ -66,7 +65,6 @@ def COVID_Predictor():
         
         
 def process_input(data_dict):
-    # Process the input data here
     
     # Mapping for data transformation
     _yesno_map = {"yes": 1, "no": 0}
@@ -101,11 +99,22 @@ def process_input(data_dict):
         'der_renal': der_renal
     })
 
+    ####### Calling Model Functions
 
-    p = predict_model_dn(series)
-    dmodel = {'value':str(round(p, 2))}
-    users = [{'predicted_risk': str(round(p, 2)), 'std': -1}]
-    return jsonify(dmodel)
+    dean_model = predict_model_dn(series)
+    shan_model = predict_model_sh(series)
+    alex_model = predict_model_afr(series)
+
+    avg_model = (dean_model + shan_model + alex_model) / 3.0
+
+    #model = {'dean':str(round(dean_model, 2)), 'shan': str(round(shan_model, 2)), 'Average': str(round(avg_model, 2)), 'alex_model': str(alex_model)}
+    output_result = {'Average': str(round(avg_model, 2))}
+    #'alex_model': str(round(alex_model, 2))
+    
+    
+    return jsonify(output_result)
+
+####################################### Model Functions ##########################################
 
 ################ Deans model
 
@@ -130,9 +139,74 @@ def predict_model_dn(data):
     model = tf.keras.models.load_model('assets/dn/model.h5')
     p = model.predict(x, verbose=0)[0][0]
     return p
-    
+
 ################################################################################################
 
+################ Shan's model
+def preprocess_inp_sh(data):
+    with open('Project4/assets/shan/ohe.pkl', 'rb') as f:
+        one_hot_enc = pickle.load(f)
+    with open('Project4/assets/shan/scaler.pkl', 'rb') as f:
+        standard_scaler = pickle.load(f)
+    multi_categorical = ['der_race_v2', 'der_smoking2', 'urban_rural', 'der_cancer_status_v4']
+    binary = ['der_obesity', 'der_cancertr_none', 'der_dm2', 'der_card', 'der_pulm', 'der_renal']
+    continuous = ['der_age_trunc']
+
+    x_continous = standard_scaler.transform(data[continuous].values.reshape(1, -1))
+    x_categorical = one_hot_enc.transform(data[multi_categorical + binary].values.reshape(1, -1))
+    x = np.concatenate([x_continous, x_categorical], axis=-1)
+
+    return x
+
+
+def predict_model_sh(data):
+    x = preprocess_inp_sh(data)
+    model = tf.keras.models.load_model('Project4/assets/shan/model_shan.h5')
+    p = model.predict(x, verbose=0)[0][0]
+    return p
+
+################################################################################################
+
+############### Alejandra's Model
+
+def preprocess_inp_afr(data):
+    with open('Project4/assets/afr/ohe.pkl', 'rb') as f:
+        one_hot_enc = pickle.load(f)
+    with open('Project4/assets/afr/scaler.pkl', 'rb') as f:
+        standard_scaler = pickle.load(f)
+    multi_categorical = ['der_race_v2', 'der_smoking2', 'urban_rural', 'der_cancer_status_v4']
+    binary = ['der_obesity', 'der_cancertr_none', 'der_dm2', 'der_card', 'der_pulm', 'der_renal']
+    continuous = ['der_age_trunc']
+
+    x_continous = standard_scaler.transform(data[continuous].values.reshape(1, -1))
+    x_categorical = one_hot_enc.transform(data[multi_categorical + binary].values.reshape(1, -1))
+    x = np.concatenate([x_continous, x_categorical], axis=-1)
+
+    return x
+
+
+def predict_model_afr(data):
+    x = preprocess_inp_afr(data)
+    model = tf.keras.models.load_model("Project4/assets/afr/model_afr.h5")
+    p = model.predict(x, verbose=0)[0][0]
+    return p
+
+################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## ############################# Covid Page
 
 @app.route('/COVID_Predictor', methods=['GET'])
 def COVID_page():
