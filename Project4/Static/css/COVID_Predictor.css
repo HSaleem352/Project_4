@@ -54,6 +54,12 @@ body {
     align-items: center;
 }
 
+/* Modal Animation */
+.animate__animated.animate__zoomIn {
+    animation-duration: 1s;
+}
+
+/* Questionnaire Content Box */
 .content-box {
     margin: 20px auto;
     padding: 20px;
@@ -112,9 +118,6 @@ body {
 }
 
 
-/* Modal Animation */
-.animate__animated.animate__zoomIn {
-    animation-duration: 1s;
-}
+
 
 
