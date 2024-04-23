@@ -426,6 +426,34 @@ def age_distribution_by_covid_severity():
 ##                                                  Debug                                                      ##
 #################################################################################################################
 
+
+def preprocess_fz(raw_inp):
+    categorical_cols = ['der_obesity', 'der_race_v2', 'der_smoking2', 'urban_rural', 'der_cancertr_none', 'der_cancer_status_v4', 'der_dm2', 'der_card', 'der_pulm', 'der_renal']
+    numeric_cols = ['der_age_trunc']
+
+    with open('assets/fz/ohe.pkl', 'rb') as f:
+      encoder = pickle.load(f)
+
+    with open('assets/fz/mm.pkl', 'rb') as f:
+      scaler = pickle.load(f)
+
+    categorical = encoder.transform(raw_inp[categorical_cols].values.reshape(1, -1))
+    numeric = scaler.transform(raw_inp[numeric_cols].values.reshape(-1, 1))
+
+    x = np.concatenate([numeric, categorical], axis=-1)
+    return x
+
+
+def predict_model_fz(inp):
+
+    # Load the model from the file
+    with open('assets/fz/model.pkl', 'rb') as f:
+        loaded_model = pickle.load(f)
+
+    x = preprocess_fz(inp)
+    return loaded_model.predict_proba(x)[0][1]
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 
