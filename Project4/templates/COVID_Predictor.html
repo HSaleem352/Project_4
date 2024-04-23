@@ -341,10 +341,11 @@
                     dataType: "json",
                     success: function(response) {
 
-                        console.log("Response received:", response.Average);
+                        console.log("Response received:", response.value);
+                        percentage_value = response.value*100
 
                        
-                        $('#output-popup').text("This individual has an estimated risk of " + response + "% for moderate-to-severe COVID-19.");
+                        $('#output-popup').text("This individual has an estimated risk of " + percentage_value + "% for moderate-to-severe COVID-19.");
                         $('#outputModal').modal('show');
            
                     },
