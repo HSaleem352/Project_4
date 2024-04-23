@@ -112,13 +112,9 @@ body {
 }
 
 
-/* Welcom Modal */
+/* Modal Animation */
 .animate__animated.animate__zoomIn {
     animation-duration: 1s;
 }
 
-/* Prediction Modal */
-.animate__animated.animate__rotateIn {
-    animation-duration: 1s;
-}
 
