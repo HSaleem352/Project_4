@@ -218,8 +218,36 @@ css code for the carousel displaying the pie charts with the timing of BC treatm
 
 **Hamza**
 
+Ajax handler
+```javascript
+
+// Send Data
+                    
+$.ajax({
+url: '/predictor',
+type: 'POST',
+contentType: 'application/json',
+data: JSON.stringify(formData),
+dataType: "json",
+success: function(response) {
+
+    console.log("Response received:", response.value);
+    percentage_value = response.value*100
+
+    
+    $('#output-popup').text("This individual has an estimated risk of " + percentage_value + "% for moderate-to-severe COVID-19.");
+    $('#outputModal').modal('show');
+
+},
+error: function(xhr, status, error) {
+    console.error('Error:', error);
+    }
+});
+```
 
 
+Flask app
+```python
 def process_input(data_dict):
     
     # Mapping for data transformation
@@ -267,7 +295,7 @@ def process_input(data_dict):
     output_result = {'value': str(round(avg_model, 2))}    
     
     return jsonify(output_result)
-
+```
 
 
 
