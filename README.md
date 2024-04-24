@@ -467,85 +467,50 @@ Custom hover template for stacked densities
             })
 ```
 
-**Shan** \
-Generates pie charts for each race category with dynamic labeling
-```python
-    const raceToChartIdMap = {
-    'Hispanic': '1',
-    'Non-Hispanic AAPI': '2',
-    'Non-Hispanic Black': '3',
-    'Non-Hispanic White': '4',
-    'Other': '5'
-};
-
-let url3 = '/api/v1/cancer_status_sum'
-d3.json(url3).then(function(data) {
-    let groupedData = d3.group(data, d => d.Race);
-
-    groupedData.forEach(function(values, race) {
-        let labels = values.map(d => d['Cancer Status']);
-        let counts = values.map(d => d.Count);
-        let chartIdSuffix = raceToChartIdMap[race]; 
-        if (!chartIdSuffix) {
-            console.error('Unknown race category:', race);
-            return; 
-        }
-
-        let trace = {
-            labels: labels,
-            values: counts,
-            type: 'pie',
-            textinfo: "percent",
-            insidetextorientation: "auto"
-        };
-
-        let layout = {
-            paper_bgcolor: 'white',
-            plot_bgcolor: 'white',
-            legend: {
-                font: {
-                    size: 16 // Adjust this value as needed to increase the font size
-                }
-            }
-        };
-             
-        let chartId = `graph${chartIdSuffix}`;
-
-        // pie chart create
-        Plotly.newPlot(chartId, [trace], layout);
-    });
-});
+**Shan** 
+Using Keras Tuner to find the optimal hyperparameters for the best neural network model through a hyperparameter search using the Hyperband algorithm.
 ```
-HTML code for flip-card with a bar chart visualizing ethnic distribution and COVID-19 severity on one side and a static image on the reverse
+def create_model(hp):
+    nn_model = tf.keras.models.Sequential()
 
-```python
-<div class="name">
-  <h1>Relationship Between Ethnic Distribution and COVID-19 Severity</h1>  
-</div>
+    # Allow kerastuner to decide which activation function to use in hidden layers
+    activation = hp.Choice('activation',['relu','tanh','softmax'])
 
-    <!-- Ethnic Distribution and COVID-19 Severity Bar chart  -->
-    <div class="container-fluid mt-3">
-      <div class="row">
-          <div class="col-md-8 p-3 text-black-on-light">
-              <div class="flip-card">
-                  <div class="flip-card-inner">
-                      <div class="flip-card-front">
-                          <div id="covid-severity-bar-chart" style="max-width: 100%;"></div>
-                      </div>
-                      <div class="flip-card-back">
-                          <img src="https://dl.dropboxusercontent.com/scl/fi/vnj7ql162x1nlfcacziwj/download-1.png?rlkey=zl7lb7sko3muagw6phuqqd233&dl=0" alt="Chart Back Side">
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="col-md-4 p-3 text-black-on-light">
-              <h2>Analysis</h2>
-              <h2>Conclusions</h2>
-          </div>
-      </div>
-  </div>
+    # Allow kerastuner to decide number of neurons in first layer
+    nn_model.add(tf.keras.layers.Dense(units=hp.Int('first_units',
+        min_value=1,
+        max_value=30,
+        step=5), activation=activation, input_dim=29))
+
+    # Allow kerastuner to decide number of hidden layers and neurons in hidden layers
+    for i in range(hp.Int('num_layers', 1, 10)):
+        nn_model.add(tf.keras.layers.Dense(units=hp.Int('units_' + str(i),
+            min_value=1,
+            max_value=30,
+            step=5),
+            activation=activation))
+
+    nn_model.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))
+
+    # Compile the model
+    nn_model.compile(loss="binary_crossentropy", optimizer='adam', metrics=['accuracy', tf.keras.metrics.AUC(name='auc')])
+
+    return nn_model
+     
+
+tuner = kt.Hyperband(
+    create_model,
+    objective="val_accuracy",
+    max_epochs=20,
+    hyperband_iterations=2)
+     
+
+tuner.search(X_train, y_train,
+             epochs=20,
+             validation_data=(X_test, y_test))
 
 ```
+
 ## References
 
 **Hamza**
@@ -568,13 +533,6 @@ HTML code for flip-card with a bar chart visualizing ethnic distribution and COV
 * [Page structures](https://getbootstrap.com) , ChatGPT
 * [Uploading images from GoogleDrive to Our Team page](https://stackoverflow.com/questions/77851898/using-google-drive-link-as-img-src-on-react-app-not-working)
 * [Home page navbar](https://tachyons.io/components/nav/logo-titles-links-centered/index.html)
-
-**Shan**
-* [Creating the carousel](https://www.w3schools.com/howto/howto_js_slideshow.asp)
-* [Deploy a Fly.io App](https://fly.io/docs/apps/deploy/)
-* [First image for race/covid/breastcancer page](https://www.cbcn.ca/web/default/files/public/Stories/race%20influence%20header.jpeg)
-* [Second image for race/covid/breastcancer page](https://dpjh8al9zd3a4.cloudfront.net/image/h:720,w:1800/183865)
-
 
 
 **Dean**
