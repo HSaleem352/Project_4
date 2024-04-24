@@ -461,7 +461,7 @@ tuner.search(X_train, y_train,
              validation_data=(X_test, y_test))
 ```
 **Alex**
-
+```
 from keras.layers import Dropout
 
 nn_model = tf.keras.models.Sequential()
