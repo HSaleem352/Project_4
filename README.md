@@ -1,19 +1,13 @@
 # Breast Cancer Research Group
 
 ## Description of Project
-Project 3 represents the culmination of our efforts in exploring and visualizing Breast Cancer data, a continuation from the analysis started in Project 1. Our study utilizes a critical dataset from the COVID-19 and Cancer Consortium (CCC19), which focuses on breast cancer patients and examines the outcomes of racial disparities within the context of COVID-19. This dataset includes demographic information and COVID-19 outcomes for patients affected by Breast Cancer, offering a comprehensive view of their experiences and challenges.
 
-Our web-based platform serves as the culmination of this project, synthesizing advanced data engineering and dynamic visualization techniques to present our findings. With the integration of PostgreSQL for database management, Flask for creating API endpoints, and front-end technologies like HTML, CSS, and JavaScript, we've developed a user-centric web application. This platform invites visitors to interact with our data through intuitive visualizations and API endpoints, enabling them to uncover the nuanced relationship between Breast Cancer and COVID-19 outcomes.
+In Project 4, our team expands upon the groundwork laid by Projects 1 and 3, which focused on breast cancer data from the COVID-19 and Cancer Consortium (CCC19). Our primary aim in this final project is to develop machine learning-based risk assessment models tailored to predicting the likelihood of women with breast cancer experiencing moderate or severe COVID-19 symptoms.
 
-## Questions We Are Asking of the Data:
-### What are the sociodemographic and clinical factors that influence adverse outcomes: 
-1. How does the timing and type of their breast cancer treatment affect their COVID-19 outcomes? - Alex
-2. Is smoking a factor in severe COVID-19 for individuals with Breast Cancer? - Mina
-3. Amongst all the races with different BC statuses, is smoking a factor for them to have COVID-19? - Mina
-4. How does race/ethnicity affect COVID with Breast Cancer? - Shan
-5. Does obesity and age have an effect on COVID-19 with Breast Cancer? - Fozia
-6. Are the severity of COVID-19 and the cancer status affected if the individuals live in urban, suburban, or rural areas? - Hamza
-7. What is the isolated effect of age on the risk of COVID-19 and Breast Cancer outcomes? - Dean
+To ensure real-time predictive capabilities, we enhance our existing web platform by introducing a "COVID-19 Risk Wizard" page. This feature allows individuals to input various parameters such as race, age, smoking status, and more. These parameters provided by users undergo analysis by four machine learning models, culminating in a weighted average number that reflects their COVID-19 risk level. This tool serves as a guideline for users to assess their COVID-19 risk and receive immediate feedback.
+
+Click here for more information about [Project 3](https://github.com/HSaleem352/Bootcamp_Project_3)
+
 
 ## Members of the Group
 - Hamza Saleem - @HSaleem352
@@ -24,20 +18,10 @@ Our web-based platform serves as the culmination of this project, synthesizing a
 - Alejandra - @AlejandraFeatherston
 
 ## Work Breakdown
-- Finding the database: All group members
-- SQL and data reading: Hamza
-- Flask: All group members
-- Plot creation: All group members
-- Home page: Mina and Hamza
-- Fly.io deploy: Shan
-- Our Team, Limitations & References pages: Mina
-- Question 1 related page: Alejandra
-- Question 2 related page: Mina
-- Question 3 related page: Mina
-- Question 4 related page: Shan
-- Question 5 related page: Fozia
-- Question 6 related page: Hamza
-- Question 7 related page: Dean
+- Developing 4 unique machine learning model on individual colab files with python : Dean, Shan, Alex, Fozia
+- Developing the app.py and flask app connection: Hamza
+- Developing the user interface with HTML and CSS and integrating it to our already-existing website: Mina
+
 
 ## Instructions on How to Use and Interact with the Project
 ### Method 1: Accessing the Web Application Directly
@@ -54,7 +38,6 @@ Visit our hosted web application by navigating to https://breastcancerproject3.f
 
 
 
-
 ## Efforts for Ethical Considerations Made in the Project
 The dataset that we are using is associated with a Creative Commons Attribution 4.0 International License. This allows for the re-distribution and re-use of the dataset as long as the creators are porperly cited. We made sure to cite the creators of the dataset both in this ReadMe and on the Website - thus adhering to the Data License.
 
@@ -64,12 +47,6 @@ We made sure to make the website easy to use and interpret, and engaging so that
 
 ## Dataset:
 [Nagaraj, G., Khaki, A., & Shah, D. (2023). Covid-19 and Cancer Consortium (CCC19) breast cancer and racial disparities outcomes study. Zenodo](https://doi.org/10.5281/zenodo.7644334). 
-
-The same dataset was used from project 1. The data was extracted from a csv file from the source mentioned above and then transformed to give the desired tables 
-representing each question. The extraction and transforming was performed in project 1 however, in the write_SQL file, some examples can be seen for the transformation part. 
-Since the data was cleaned and tranformed into structured dataframes, SQL was used to save each dataframe in the form of a table. In order to let this wepapp be hosted from
-any host device, the SQL Server and the Database were created on Render. Using pgAdmin and Postgres, we were able to upload all our dataframes into render's database and were 
-able to successfully read from the database. SQL Alchemy and pandas library were used to communicate between our flaskapp and the SQL server. Since each dataframe represents a different question, they are all independant of each other and share no connection to one another. The ERD of the Database is showing below: ![ERD](ERD.png) 
 
 
 ## Code Snippets
