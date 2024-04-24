@@ -52,52 +52,94 @@ We made sure to make the website easy to use and interpret, and engaging so that
 ## Code Snippets
 **Mina**
 
-Home page question cards animation:
+Modal Example:
 ```python
-.card-link .card {
-    transition: transform 0.3s ease-in-out;
-    width: 100%; /* Set a fixed width for the card */
-}
-
-.card-link:hover .card {
-    transform: scale(1.08); /* Increase the size on hover, adjust as needed */
-    transition: 0.7s;
-    box-shadow: 0px 0px 2px 2px darkgrey;     
-}
+<div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-scale">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Welcome to COVID-19 Risk Wizard!</h5>
+            </div>
+            <div class="modal-body" style="text-align: center; background-color: #E5DFCF;">
+            <p>We're excited to introduce you to our predictive model designed to assess the risk of moderate to severe COVID-19 in breast cancer 
+            patients. Leveraging a comprehensive dataset, we've developed an algorithm that analyzes various patient factors to provide valuable insights.</p>
+            <p> </p>
+            <p><span style="font-weight: bold; color: #4C5D6A;">Important Note:</span> It's essential to recognize that while our model offers valuable predictions, it's not infallible. Like any tool, it has limitations,
+            primarily due to the constraints of our dataset. Therefore, the results should be interpreted with caution and not solely relied upon for medical decision-making.</p>
+            <p> </p>
+            <p>Press "Continue" to begin the prediction process.</p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Continue</button>
+            </div>
+        </div>
+        </div>
+    </div>
 ```
-Removing the blue color hyperlink:
+Tooltip Initialization:
 ```python
-.icon-link:hover {
-    color: inherit;
-}
-```
-Flip cards:
-```python
-    <script>
-        function flipCard(card) {
-            card.classList.toggle('flipped');
-        }
-    </script>
-//css//
-.card.flipped {
-    transform: rotateY(180deg);
-}
-```
-Card click expand:
-```python
-    <script>
-        document.querySelectorAll('.card').forEach(function(card) {
-            card.addEventListener('click', function() {
-                var targetCollapse = card.getAttribute('data-target');
-                var isExpanded = $(targetCollapse).hasClass('show');
-    
-                // If the explanation is not expanded, expand it
-                if (!isExpanded) {
-                    $(targetCollapse).collapse('show');
-                }
-            });
+       <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
         });
     </script>
+```
+Checking if all questions are answered:
+```python
+    <script>
+        var formData = {};
+        document.addEventListener("DOMContentLoaded", function() {
+            function checkAllQuestionsAnswered() {
+                var selects = document.querySelectorAll("select");
+                var radios = document.querySelectorAll("input[type='radio']");
+                var allAnswered = true;
+                selects.forEach(function(select) {
+                    if (select.value === "") {
+                        allAnswered = false;
+                    }
+                });
+                radios.forEach(function(radio) {
+                    var name = radio.getAttribute("name");
+                    if (!document.querySelector("input[name='" + name + "']:checked")) {
+                        allAnswered = false;
+                    }
+                });
+                return allAnswered;
+            }
+
+
+            // Function to handle predict button click
+            function handlePredictButtonClick() {
+                var selects = document.querySelectorAll("select");
+                var radios = document.querySelectorAll("input[type='radio']");
+                if (checkAllQuestionsAnswered()) {
+                    // All questions answered, proceed with prediction
+                    console.log("All questions answered. Proceeding with prediction...");
+
+                    document.getElementById("errorMessage").style.display = "none"; // Hide error message
+                    selects.forEach(function(select) {
+                        select.classList.remove("unanswered");
+                    });
+                    radios.forEach(function(radio) {
+                        var name = radio.getAttribute("name");
+                        var questionRadioButtons = document.querySelectorAll("input[name='" + name + "']");
+                        var isAnswered = false;
+                        questionRadioButtons.forEach(function(radioButton) {
+                            if (radioButton.checked) {
+                                isAnswered = true;
+                            }
+                        });
+                        if (!isAnswered) {
+                            questionRadioButtons.forEach(function(radioButton) {
+                                radioButton.classList.add("unanswered");
+                            });
+                        } else {
+                            // Remove the highlight if the question is answered
+                            questionRadioButtons.forEach(function(radioButton) {
+                                radioButton.classList.remove("unanswered");
+                            });
+                        }
 ```
 
 
@@ -531,8 +573,6 @@ tuner.search(X_train, y_train,
 
 **Mina**
 * [Page structures](https://getbootstrap.com) , ChatGPT
-* [Uploading images from GoogleDrive to Our Team page](https://stackoverflow.com/questions/77851898/using-google-drive-link-as-img-src-on-react-app-not-working)
-* [Home page navbar](https://tachyons.io/components/nav/logo-titles-links-centered/index.html)
 
 
 **Dean**
