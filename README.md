@@ -459,6 +459,19 @@ tuner = kt.Hyperband(
 tuner.search(X_train, y_train,
              epochs=20,
              validation_data=(X_test, y_test))
+**Alex**
+
+from keras.layers import Dropout
+
+nn_model = tf.keras.models.Sequential()
+
+nn_model.add(tf.keras.layers.Dense(128, activation="tanh", input_dim=X_train.shape[1]))
+nn_model.add(Dropout(0.2))
+nn_model.add(tf.keras.layers.Dense(64, activation="tanh"))
+nn_model.add(Dropout(0.2))
+nn_model.add(tf.keras.layers.Dense(1, activation="sigmoid"))
+
+nn_model.summary()
 
 ```
 
