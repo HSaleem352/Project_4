@@ -21,6 +21,7 @@ Click here for more information about [Project 3](https://github.com/HSaleem352/
 - Developing 4 unique machine learning model on individual colab files with python : Dean, Shan, Alex, Fozia
 - Developing the app.py and flask app connection: Hamza
 - Developing the user interface with HTML and CSS and integrating it to our already-existing website: Mina
+- Deploy fly.io : Shan, Hamza
 
 
 ## Instructions on How to Use and Interact with the Project
@@ -143,120 +144,6 @@ Checking if all questions are answered:
 ```
 
 
-**Alejandra**
-
-html code for the carousel displaying the pie charts with the timing of BC treatment for each covid outcome 
-  <!-- Timing Carousel -->
-  
-  <!-- Slideshow container -->
-  <div class="timing-slideshow-container">
-  
-    <!-- Bar Charts with caption text -->
-    <div class="myTimingSlides">
-      <div id="afr_mild_timing_pie" style ="width:100%"></div>
-      <div class="timingtext" style = "width:100%"> The most number of patients experienced mild covid outcomes when they had ATC within the first 4 weeks of developing covid</div>
-    </div>
-  
-    <div class="myTimingSlides">
-      <div id="afr_moderate_timing_pie" style ="width:100%"></div>
-      <div class="timingtext" style = "width:100%"> The most number of patients experienced moderate covid outcomes when they had ATC within the first 4 weeks of developing covid</div>
-    </div>
-  
-    <div class="myTimingSlides">
-      <div id="afr_severe_timing_pie" style ="width:100%"></div>
-      <div class="timingtext" style = "width:100%"> The most number of patients experienced severe covid outcomes when they had ATC 3 months after of developing covid</div>
-    </div>
-  
-    <!-- Next and previous buttons -->
-    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-    <a class="next" onclick="plusSlides(1)">&#10095;</a>
-  
-  </div>
-  
-  <br>
-  
-  <!-- The dots/circles -->
-  <div style="text-align:center">
-    <span class="dot" onclick="currentSlide(1)"></span> 
-    <span class="dot" onclick="currentSlide(2)"></span> 
-    <span class="dot" onclick="currentSlide(3)"></span> 
-  </div>
-
-css code for the carousel displaying the pie charts with the timing of BC treatment for each covid outcome 
-```python
-* {box-sizing:border-box}
-
-/* Slideshow container */
-.timing-slideshow-container {
-  max-width: 700px;
-  height: 600px;
-  position: relative;
-  margin:auto;
-  overflow: hidden;
-}
-
-/* Hide the images by default */
-.myTimingSlides {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  width: 100%;
-}
-
-/* Next & previous buttons */
-.prev, .next {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  width: auto;
-  margin-top: -22px;
-  padding: 16px;
-  color: black;
-  font-weight: bold;
-  font-size: 18px;
-  transition: 0.6s ease;
-  border-radius: 0 3px 3px 0;
-  user-select: none;
-  transform: rgba(214, 206, 206, 0.8);
-}
-
-/* Position the "next button" to the right */
-.next {
-  right: 0;
-  border-radius: 3px 0 0 3px;
-}
-
-/* On hover, add a black background color with a little bit see-through */
-.prev:hover, .next:hover {
-  background-color: rgba(0,0,0,0.8);
-  color: white;
-}
-
-/* Caption text */
-.timingtext {
-  color: black;
-  font-size: 15px;
-  padding: 8px 12px;
-}
-
-/* The dots/bullets/indicators */
-.dot {
-  cursor: pointer;
-  height: 15px;
-  width: 15px;
-  margin: 0 2px;
-  background-color: #bbb;
-  border-radius: 50%;
-  display: inline-block;
-  transition: background-color 0.6s ease;
-}
-
-.active, .dot:hover {
-  background-color: #717171;
-}
-```
 
 **Hamza**
 
@@ -340,84 +227,6 @@ def process_input(data_dict):
 ```
 
 
-
-**Dean** \
-Functions to compute densities
-```python
-// Function to compute density
-function kernelDensityEstimator(kernel, X) {
-    return function(V) {
-        return X.map(function(x) {
-            return [x, d3.mean(V, function(v) {
-                return kernel(x - v);
-            })];
-        });
-    };
-}
-
-function kernelEpanechnikov(k) {
-    return function(v) {
-        return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
-    };
-}
-
-function plotCancerDensity() {
-    d3.json("/api/v1/age_status_severity").then(function(data) {
-        let traces = []
-        let density = null,
-            dat = null
-
-        for (i in canHueOrder) {
-            dat = data
-                .filter((d) => d.der_cancer_status_v4 === canHueOrder[i])
-                .map((d) => d.der_age_trunc)
-            density = kde(dat)
-            traces.push({
-                x: density.map((d) => d[0]),
-                y: density.map((d) => 100 * (dat.length / data.length) * d[1]),
-                line: {
-                    color: canColors[i]
-                },
-                mode: "lines",
-                name: canNames[i],
-                type: "scatter",
-                hovermode: false
-            })
-        }
-
-        Plotly.newPlot('density-cancer', traces);
-    })
-}
-```
-Custom hover template for stacked densities
-```python
-            hovertemplate = 'Relative:%{customdata:.3f})%<extra>%{fullData.name}</extra>'
-            if (i == (covHueOrder.length - 1)) {
-                hovertemplate = 'Overall Density:%{y:.3f}% | Relative:%{customdata:.3f})%<extra>%{fullData.name}</extra>'
-            }
-            max_ = Math.max(max_, Math.max(...y))
-            traces.push({
-                x: x,
-                y: y,
-                line: {
-                    color: covColors[i],
-                },
-                fill: "tonexty",
-                fillcolor: covColors[i],
-                mode: "lines",
-                name: covNames[i],
-                type: "scatter",
-                customdata: subvector(y, y_last),
-                hovertemplate: hovertemplate,
-                hoverlabel: {
-                    font: {
-                        color: 'white',
-                        size: 18
-                    }
-                }
-            })
-```
-
 **Shan** 
 Using Keras Tuner to find the optimal hyperparameters for the best neural network model through a hyperparameter search using the Hyperband algorithm.
 ```
@@ -460,6 +269,7 @@ tuner.search(X_train, y_train,
              epochs=20,
              validation_data=(X_test, y_test))
 ```
+
 **Alex**
 ```
 from keras.layers import Dropout
