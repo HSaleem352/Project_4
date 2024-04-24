@@ -15,8 +15,6 @@ import pickle
 import numpy as np
 import json
 
-
-
 engine = create_engine('postgresql+psycopg2://breast_cancer_dataset_user:UnSNEeECgY7ky2i5KAPC2WtQn9XrRpvc@dpg-cnbvjf779t8c73epbb3g-a.oregon-postgres.render.com/breast_cancer_dataset')
 
 app = Flask(__name__)
