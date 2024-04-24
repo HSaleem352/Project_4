@@ -459,6 +459,7 @@ tuner = kt.Hyperband(
 tuner.search(X_train, y_train,
              epochs=20,
              validation_data=(X_test, y_test))
+```
 **Alex**
 
 from keras.layers import Dropout
