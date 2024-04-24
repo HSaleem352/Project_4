@@ -10,13 +10,10 @@ from sqlalchemy import create_engine, text, inspect, func
 from flask import Flask, jsonify, render_template
 from flask import request
 import tensorflow as tf
-import h5py
 from flask_cors import CORS
 import pickle
 import numpy as np
 import json
-
-
 
 engine = create_engine('postgresql+psycopg2://breast_cancer_dataset_user:UnSNEeECgY7ky2i5KAPC2WtQn9XrRpvc@dpg-cnbvjf779t8c73epbb3g-a.oregon-postgres.render.com/breast_cancer_dataset')
 
@@ -51,6 +48,19 @@ def Limitations_References():
 #################################################################################################################
 
 
+##################################################################################################
+####################################    Covid Page      ##########################################
+##################################################################################################
+
+@app.route('/COVID_Predictor', methods=['GET'])
+def COVID_page():
+    return render_template("COVID_Predictor.html")
+
+
+##################################################################################################
+################################       Ajax Communication      ###################################
+##################################################################################################
+
 @app.route('/predictor', methods=['POST'])
 def COVID_Predictor():
     
@@ -64,9 +74,7 @@ def COVID_Predictor():
             return jsonify({'error': 'Request must be JSON'}), 400
         
         
-        
 def process_input(data_dict):
-    # Process the input data here
     
     # Mapping for data transformation
     _yesno_map = {"yes": 1, "no": 0}
@@ -101,13 +109,24 @@ def process_input(data_dict):
         'der_renal': der_renal
     })
 
+    ####### Calling Model Functions
 
-    p = predict_model_dn(series)
-    dmodel = {'value':str(round(p, 2))}
-    users = [{'predicted_risk': str(round(p, 2)), 'std': -1}]
-    return jsonify(dmodel)
+    dean_model = predict_model_dn(series)
+    shan_model = predict_model_sh(series)
+    alex_model = predict_model_afr(series)
+    fozia_model = predict_model_fz(series)
 
-################ Deans model
+    avg_model = (dean_model + shan_model + alex_model + fozia_model) / 4.0
+
+    output_result = {'value': str(round(avg_model, 2))}    
+    
+    return jsonify(output_result)
+
+##################################################################################################
+####################################### Model Functions ##########################################
+##################################################################################################
+
+################ Dean's model
 
 def preprocess_inp_dn(data):
     with open('Project4/assets/dn/ohe.pkl', 'rb') as f:
@@ -130,6 +149,34 @@ def predict_model_dn(data):
     model = tf.keras.models.load_model('Project4/assets/dn/model.h5')
     p = model.predict(x, verbose=0)[0][0]
     return p
+
+################################################################################################
+
+################ Shan's model
+
+def preprocess_inp_sh(data):
+    with open('Project4/assets/shan/ohe.pkl', 'rb') as f:
+        one_hot_enc = pickle.load(f)
+    with open('Project4/assets/shan/scaler.pkl', 'rb') as f:
+        standard_scaler = pickle.load(f)
+    multi_categorical = ['der_race_v2', 'der_smoking2', 'urban_rural', 'der_cancer_status_v4']
+    binary = ['der_obesity', 'der_cancertr_none', 'der_dm2', 'der_card', 'der_pulm', 'der_renal']
+    continuous = ['der_age_trunc']
+
+    x_continous = standard_scaler.transform(data[continuous].values.reshape(1, -1))
+    x_categorical = one_hot_enc.transform(data[multi_categorical + binary].values.reshape(1, -1))
+    x = np.concatenate([x_continous, x_categorical], axis=-1)
+
+    return x
+
+
+def predict_model_sh(data):
+    x = preprocess_inp_sh(data)
+    model = tf.keras.models.load_model('Project4/assets/shan/model_shan.h5')
+    p = model.predict(x, verbose=0)[0][0]
+    return p
+
+################################################################################################
 
 ############### Alejandra's Model
 
@@ -157,10 +204,33 @@ def predict_model_afr(data):
 
 ################################################################################################
 
+############### Fozia's Model
 
-@app.route('/COVID_Predictor', methods=['GET'])
-def COVID_page():
-    return render_template("COVID_Predictor.html")
+def preprocess_fz(raw_inp):
+    categorical_cols = ['der_obesity', 'der_race_v2', 'der_smoking2', 'urban_rural', 'der_cancertr_none', 'der_cancer_status_v4', 'der_dm2', 'der_card', 'der_pulm', 'der_renal']
+    numeric_cols = ['der_age_trunc']
+
+    with open('Project4/assets/fz/ohe.pkl', 'rb') as f:
+      encoder = pickle.load(f)
+
+    with open('Project4/assets/fz/mm.pkl', 'rb') as f:
+      scaler = pickle.load(f)
+
+    categorical = encoder.transform(raw_inp[categorical_cols].values.reshape(1, -1))
+    numeric = scaler.transform(raw_inp[numeric_cols].values.reshape(-1, 1))
+
+    x = np.concatenate([numeric, categorical], axis=-1)
+    return x
+
+
+def predict_model_fz(inp):
+
+    # Load the model from the file
+    with open('Project4/assets/fz/model.pkl', 'rb') as f:
+        loaded_model = pickle.load(f)
+
+    x = preprocess_fz(inp)
+    return loaded_model.predict_proba(x)[0][1]
     
 
 #################################################################################################################
@@ -547,34 +617,6 @@ def age_distribution_by_covid_severity():
 #################################################################################################################
 ##                                                  Debug                                                      ##
 #################################################################################################################
-
-
-# @app.route('/risk')
-# def risk_assessment_page():
-#     return render_template("risk.html")
-
-
-# @app.route("/api/v1/risk_query/<age>/<obesity>/<smoking>/<race>/<area>/<treatment>/<status>/<diabetes>/<cardiovascular>/<pulmonary>/<renal>")
-# def risk_assessment(age, obesity, smoking, race, area, treatment, status, diabetes, cardiovascular, pulmonary, renal):
-#     _yesno_map = {'false': 'No', 'true': 'Yes'}
-#     _smoking_map = {'false': 'Never', 'true': 'Current or Former'}
-    # data = pd.Series(
-    #     {'der_age_trunc': float(age),
-    #      'der_obesity': _yesno_map[obesity],
-    #      'der_smoking2': _smoking_map[smoking],
-    #      'der_race_v2': race,
-    #      'urban_rural': area,
-    #      'der_cancertr_none': _yesno_map[treatment],
-    #      'der_cancer_status_v4': status,
-    #      'der_dm2': _yesno_map[diabetes],
-    #      'der_card': _yesno_map[cardiovascular],
-    #      'der_pulm': _yesno_map[pulmonary],
-    #      'der_renal': _yesno_map[renal]
-    #      })
-    
-
-
-
 
 
 if __name__ == '__main__':

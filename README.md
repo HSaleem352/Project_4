@@ -1,19 +1,13 @@
 # Breast Cancer Research Group
 
 ## Description of Project
-Project 3 represents the culmination of our efforts in exploring and visualizing Breast Cancer data, a continuation from the analysis started in Project 1. Our study utilizes a critical dataset from the COVID-19 and Cancer Consortium (CCC19), which focuses on breast cancer patients and examines the outcomes of racial disparities within the context of COVID-19. This dataset includes demographic information and COVID-19 outcomes for patients affected by Breast Cancer, offering a comprehensive view of their experiences and challenges.
 
-Our web-based platform serves as the culmination of this project, synthesizing advanced data engineering and dynamic visualization techniques to present our findings. With the integration of PostgreSQL for database management, Flask for creating API endpoints, and front-end technologies like HTML, CSS, and JavaScript, we've developed a user-centric web application. This platform invites visitors to interact with our data through intuitive visualizations and API endpoints, enabling them to uncover the nuanced relationship between Breast Cancer and COVID-19 outcomes.
+In Project 4, our team expands upon the groundwork laid by Projects 1 and 3, which focused on breast cancer data from the COVID-19 and Cancer Consortium (CCC19). Our primary aim in this final project is to develop machine learning-based risk assessment models tailored to predicting the likelihood of women with breast cancer experiencing moderate or severe COVID-19 symptoms.
 
-## Questions We Are Asking of the Data:
-### What are the sociodemographic and clinical factors that influence adverse outcomes: 
-1. How does the timing and type of their breast cancer treatment affect their COVID-19 outcomes? - Alex
-2. Is smoking a factor in severe COVID-19 for individuals with Breast Cancer? - Mina
-3. Amongst all the races with different BC statuses, is smoking a factor for them to have COVID-19? - Mina
-4. How does race/ethnicity affect COVID with Breast Cancer? - Shan
-5. Does obesity and age have an effect on COVID-19 with Breast Cancer? - Fozia
-6. Are the severity of COVID-19 and the cancer status affected if the individuals live in urban, suburban, or rural areas? - Hamza
-7. What is the isolated effect of age on the risk of COVID-19 and Breast Cancer outcomes? - Dean
+To ensure real-time predictive capabilities, we enhance our existing web platform by introducing a "COVID-19 Risk Wizard" page. This feature allows individuals to input various parameters such as race, age, smoking status, and more. These parameters provided by users undergo analysis by four machine learning models, culminating in a weighted average number that reflects their COVID-19 risk level. This tool serves as a guideline for users to assess their COVID-19 risk and receive immediate feedback.
+
+Click here for more information about [Project 3](https://github.com/HSaleem352/Bootcamp_Project_3)
+
 
 ## Members of the Group
 - Hamza Saleem - @HSaleem352
@@ -24,20 +18,10 @@ Our web-based platform serves as the culmination of this project, synthesizing a
 - Alejandra - @AlejandraFeatherston
 
 ## Work Breakdown
-- Finding the database: All group members
-- SQL and data reading: Hamza
-- Flask: All group members
-- Plot creation: All group members
-- Home page: Mina and Hamza
-- Fly.io deploy: Shan
-- Our Team, Limitations & References pages: Mina
-- Question 1 related page: Alejandra
-- Question 2 related page: Mina
-- Question 3 related page: Mina
-- Question 4 related page: Shan
-- Question 5 related page: Fozia
-- Question 6 related page: Hamza
-- Question 7 related page: Dean
+- Developing 4 unique machine learning model on individual colab files with python : Dean, Shan, Alex, Fozia
+- Developing the app.py and flask app connection: Hamza
+- Developing the user interface with HTML and CSS and integrating it to our already-existing website: Mina
+
 
 ## Instructions on How to Use and Interact with the Project
 ### Method 1: Accessing the Web Application Directly
@@ -54,7 +38,6 @@ Visit our hosted web application by navigating to https://breastcancerproject3.f
 
 
 
-
 ## Efforts for Ethical Considerations Made in the Project
 The dataset that we are using is associated with a Creative Commons Attribution 4.0 International License. This allows for the re-distribution and re-use of the dataset as long as the creators are porperly cited. We made sure to cite the creators of the dataset both in this ReadMe and on the Website - thus adhering to the Data License.
 
@@ -65,62 +48,98 @@ We made sure to make the website easy to use and interpret, and engaging so that
 ## Dataset:
 [Nagaraj, G., Khaki, A., & Shah, D. (2023). Covid-19 and Cancer Consortium (CCC19) breast cancer and racial disparities outcomes study. Zenodo](https://doi.org/10.5281/zenodo.7644334). 
 
-The same dataset was used from project 1. The data was extracted from a csv file from the source mentioned above and then transformed to give the desired tables 
-representing each question. The extraction and transforming was performed in project 1 however, in the write_SQL file, some examples can be seen for the transformation part. 
-Since the data was cleaned and tranformed into structured dataframes, SQL was used to save each dataframe in the form of a table. In order to let this wepapp be hosted from
-any host device, the SQL Server and the Database were created on Render. Using pgAdmin and Postgres, we were able to upload all our dataframes into render's database and were 
-able to successfully read from the database. SQL Alchemy and pandas library were used to communicate between our flaskapp and the SQL server. Since each dataframe represents a different question, they are all independant of each other and share no connection to one another. The ERD of the Database is showing below: ![ERD](ERD.png) 
-
 
 ## Code Snippets
 **Mina**
 
-Home page question cards animation:
+Modal Example:
 ```python
-.card-link .card {
-    transition: transform 0.3s ease-in-out;
-    width: 100%; /* Set a fixed width for the card */
-}
-
-.card-link:hover .card {
-    transform: scale(1.08); /* Increase the size on hover, adjust as needed */
-    transition: 0.7s;
-    box-shadow: 0px 0px 2px 2px darkgrey;     
-}
+<div class="modal fade" id="welcomeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-scale">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Welcome to COVID-19 Risk Wizard!</h5>
+            </div>
+            <div class="modal-body" style="text-align: center; background-color: #E5DFCF;">
+            <p>We're excited to introduce you to our predictive model designed to assess the risk of moderate to severe COVID-19 in breast cancer 
+            patients. Leveraging a comprehensive dataset, we've developed an algorithm that analyzes various patient factors to provide valuable insights.</p>
+            <p> </p>
+            <p><span style="font-weight: bold; color: #4C5D6A;">Important Note:</span> It's essential to recognize that while our model offers valuable predictions, it's not infallible. Like any tool, it has limitations,
+            primarily due to the constraints of our dataset. Therefore, the results should be interpreted with caution and not solely relied upon for medical decision-making.</p>
+            <p> </p>
+            <p>Press "Continue" to begin the prediction process.</p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Continue</button>
+            </div>
+        </div>
+        </div>
+    </div>
 ```
-Removing the blue color hyperlink:
+Tooltip Initialization:
 ```python
-.icon-link:hover {
-    color: inherit;
-}
-```
-Flip cards:
-```python
-    <script>
-        function flipCard(card) {
-            card.classList.toggle('flipped');
-        }
-    </script>
-//css//
-.card.flipped {
-    transform: rotateY(180deg);
-}
-```
-Card click expand:
-```python
-    <script>
-        document.querySelectorAll('.card').forEach(function(card) {
-            card.addEventListener('click', function() {
-                var targetCollapse = card.getAttribute('data-target');
-                var isExpanded = $(targetCollapse).hasClass('show');
-    
-                // If the explanation is not expanded, expand it
-                if (!isExpanded) {
-                    $(targetCollapse).collapse('show');
-                }
-            });
+       <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
         });
     </script>
+```
+Checking if all questions are answered:
+```python
+    <script>
+        var formData = {};
+        document.addEventListener("DOMContentLoaded", function() {
+            function checkAllQuestionsAnswered() {
+                var selects = document.querySelectorAll("select");
+                var radios = document.querySelectorAll("input[type='radio']");
+                var allAnswered = true;
+                selects.forEach(function(select) {
+                    if (select.value === "") {
+                        allAnswered = false;
+                    }
+                });
+                radios.forEach(function(radio) {
+                    var name = radio.getAttribute("name");
+                    if (!document.querySelector("input[name='" + name + "']:checked")) {
+                        allAnswered = false;
+                    }
+                });
+                return allAnswered;
+            }
+
+
+            // Function to handle predict button click
+            function handlePredictButtonClick() {
+                var selects = document.querySelectorAll("select");
+                var radios = document.querySelectorAll("input[type='radio']");
+                if (checkAllQuestionsAnswered()) {
+                    // All questions answered, proceed with prediction
+                    console.log("All questions answered. Proceeding with prediction...");
+
+                    document.getElementById("errorMessage").style.display = "none"; // Hide error message
+                    selects.forEach(function(select) {
+                        select.classList.remove("unanswered");
+                    });
+                    radios.forEach(function(radio) {
+                        var name = radio.getAttribute("name");
+                        var questionRadioButtons = document.querySelectorAll("input[name='" + name + "']");
+                        var isAnswered = false;
+                        questionRadioButtons.forEach(function(radioButton) {
+                            if (radioButton.checked) {
+                                isAnswered = true;
+                            }
+                        });
+                        if (!isAnswered) {
+                            questionRadioButtons.forEach(function(radioButton) {
+                                radioButton.classList.add("unanswered");
+                            });
+                        } else {
+                            // Remove the highlight if the question is answered
+                            questionRadioButtons.forEach(function(radioButton) {
+                                radioButton.classList.remove("unanswered");
+                            });
+                        }
 ```
 
 
@@ -241,334 +260,208 @@ css code for the carousel displaying the pie charts with the timing of BC treatm
 
 **Hamza**
 
-amCharts library was used for donut graphs,
-plotli was used for bar graph,
-animate.css library was used for the home page animation,
-bootstrap library was used for collapse buttons.
+Ajax handler
+```javascript
 
-### SQL Postgres from Render:
+// Send Data
+                    
+$.ajax({
+url: '/predictor',
+type: 'POST',
+contentType: 'application/json',
+data: JSON.stringify(formData),
+dataType: "json",
+success: function(response) {
 
-for writing data to the server:
-```python
-with engine.connect() as connection:
-    residence_counts.to_sql('api_endpoint',connection)
-```
-for reading data from the server:
-```python
-with engine.connect() as connection:
-        df = pd.read_sql('api_endpoint',connection)
-```
+    console.log("Response received:", response.value);
+    percentage_value = response.value*100
 
-### Gradient Donut Graph:
-```python
-// Read the Data
-  var names = response.map(d => d.urban_rural);
-  var count = response.map(d => d.count);
-  var figure = [];
+    
+    $('#output-popup').text("This individual has an estimated risk of " + percentage_value + "% for moderate-to-severe COVID-19.");
+    $('#outputModal').modal('show');
 
-  for (let i = 0; i < names.length; i++) {
-    figure.push(
-    {labels: names[i], values: count[i]}
-    )
-  }
-
-  //Create root element
-  var root = am5.Root.new("residence_pie");
-
-  // Set themes
-  root.setThemes([
-    am5themes_Animated.new(root),
-  ]);
-
-  // Create chart
-  var chart = root.container.children.push(am5percent.PieChart.new(root, {
-    radius: am5.percent(90),
-    innerRadius: am5.percent(50),
-    layout: root.horizontalLayout
-  }));
-  // Creating the series template
-  var series = chart.series.push(am5percent.PieSeries.new(root, {
-    name: "Residence",
-    valueField: "values",
-    categoryField: "labels"
-  }));
-  // Setting the data
-  series.data.setAll(figure)
-
-  // Disabling labels and ticks
-  series.labels.template.set("visible", false);
-  series.ticks.template.set("visible", false);
-
-  // Adding gradients
-  series.slices.template.set("strokeOpacity", 0);
-  series.slices.template.set("fillGradient", am5.RadialGradient.new(root, {
-    stops: [{
-      brighten: -0.8
-    }, {
-      brighten: -0.8
-    }, {
-      brighten: -0.5
-    }, {
-      brighten: 0
-    }, {
-      brighten: -0.5
-    }]
-  }));
-
-  // Create legend
-  var legend = chart.children.push(am5.Legend.new(root, {
-    centerY: am5.percent(50),
-    y: am5.percent(50),
-    layout: root.verticalLayout
-  }));
-  // set value labels align to right
-  legend.valueLabels.template.setAll({ textAlign: "right" })
-  // set width and max width of labels
-  legend.labels.template.setAll({ 
-    maxWidth: 140,
-    width: 140,
-    oversizedBehavior: "wrap"
-  });
-
-  legend.data.setAll(series.dataItems);
-
-
-  // Play initial series animation
-  series.appear(1000, 100);
-  
-**Dean** \
-Functions to compute densities
-```python
-// Function to compute density
-function kernelDensityEstimator(kernel, X) {
-    return function(V) {
-        return X.map(function(x) {
-            return [x, d3.mean(V, function(v) {
-                return kernel(x - v);
-            })];
-        });
-    };
-}
-
-function kernelEpanechnikov(k) {
-    return function(v) {
-        return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
-    };
-}
-
-function plotCancerDensity() {
-    d3.json("/api/v1/age_status_severity").then(function(data) {
-        let traces = []
-        let density = null,
-            dat = null
-
-        for (i in canHueOrder) {
-            dat = data
-                .filter((d) => d.der_cancer_status_v4 === canHueOrder[i])
-                .map((d) => d.der_age_trunc)
-            density = kde(dat)
-            traces.push({
-                x: density.map((d) => d[0]),
-                y: density.map((d) => 100 * (dat.length / data.length) * d[1]),
-                line: {
-                    color: canColors[i]
-                },
-                mode: "lines",
-                name: canNames[i],
-                type: "scatter",
-                hovermode: false
-            })
-        }
-
-        Plotly.newPlot('density-cancer', traces);
-    })
-}
-```
-Custom hover template for stacked densities
-```python
-            hovertemplate = 'Relative:%{customdata:.3f})%<extra>%{fullData.name}</extra>'
-            if (i == (covHueOrder.length - 1)) {
-                hovertemplate = 'Overall Density:%{y:.3f}% | Relative:%{customdata:.3f})%<extra>%{fullData.name}</extra>'
-            }
-            max_ = Math.max(max_, Math.max(...y))
-            traces.push({
-                x: x,
-                y: y,
-                line: {
-                    color: covColors[i],
-                },
-                fill: "tonexty",
-                fillcolor: covColors[i],
-                mode: "lines",
-                name: covNames[i],
-                type: "scatter",
-                customdata: subvector(y, y_last),
-                hovertemplate: hovertemplate,
-                hoverlabel: {
-                    font: {
-                        color: 'white',
-                        size: 18
-                    }
-                }
-            })
-```
-
-**Dean** \
-Functions to compute densities
-```python
-// Function to compute density
-function kernelDensityEstimator(kernel, X) {
-    return function(V) {
-        return X.map(function(x) {
-            return [x, d3.mean(V, function(v) {
-                return kernel(x - v);
-            })];
-        });
-    };
-}
-
-function kernelEpanechnikov(k) {
-    return function(v) {
-        return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
-    };
-}
-
-function plotCancerDensity() {
-    d3.json("/api/v1/age_status_severity").then(function(data) {
-        let traces = []
-        let density = null,
-            dat = null
-
-        for (i in canHueOrder) {
-            dat = data
-                .filter((d) => d.der_cancer_status_v4 === canHueOrder[i])
-                .map((d) => d.der_age_trunc)
-            density = kde(dat)
-            traces.push({
-                x: density.map((d) => d[0]),
-                y: density.map((d) => 100 * (dat.length / data.length) * d[1]),
-                line: {
-                    color: canColors[i]
-                },
-                mode: "lines",
-                name: canNames[i],
-                type: "scatter",
-                hovermode: false
-            })
-        }
-
-        Plotly.newPlot('density-cancer', traces);
-    })
-}
-```
-Custom hover template for stacked densities
-```python
-            hovertemplate = 'Relative:%{customdata:.3f})%<extra>%{fullData.name}</extra>'
-            if (i == (covHueOrder.length - 1)) {
-                hovertemplate = 'Overall Density:%{y:.3f}% | Relative:%{customdata:.3f})%<extra>%{fullData.name}</extra>'
-            }
-            max_ = Math.max(max_, Math.max(...y))
-            traces.push({
-                x: x,
-                y: y,
-                line: {
-                    color: covColors[i],
-                },
-                fill: "tonexty",
-                fillcolor: covColors[i],
-                mode: "lines",
-                name: covNames[i],
-                type: "scatter",
-                customdata: subvector(y, y_last),
-                hovertemplate: hovertemplate,
-                hoverlabel: {
-                    font: {
-                        color: 'white',
-                        size: 18
-                    }
-                }
-            })
-```
-
-**Shan** \
-Generates pie charts for each race category with dynamic labeling
-```python
-    const raceToChartIdMap = {
-    'Hispanic': '1',
-    'Non-Hispanic AAPI': '2',
-    'Non-Hispanic Black': '3',
-    'Non-Hispanic White': '4',
-    'Other': '5'
-};
-
-let url3 = '/api/v1/cancer_status_sum'
-d3.json(url3).then(function(data) {
-    let groupedData = d3.group(data, d => d.Race);
-
-    groupedData.forEach(function(values, race) {
-        let labels = values.map(d => d['Cancer Status']);
-        let counts = values.map(d => d.Count);
-        let chartIdSuffix = raceToChartIdMap[race]; 
-        if (!chartIdSuffix) {
-            console.error('Unknown race category:', race);
-            return; 
-        }
-
-        let trace = {
-            labels: labels,
-            values: counts,
-            type: 'pie',
-            textinfo: "percent",
-            insidetextorientation: "auto"
-        };
-
-        let layout = {
-            paper_bgcolor: 'white',
-            plot_bgcolor: 'white',
-            legend: {
-                font: {
-                    size: 16 // Adjust this value as needed to increase the font size
-                }
-            }
-        };
-             
-        let chartId = `graph${chartIdSuffix}`;
-
-        // pie chart create
-        Plotly.newPlot(chartId, [trace], layout);
-    });
+},
+error: function(xhr, status, error) {
+    console.error('Error:', error);
+    }
 });
 ```
-HTML code for flip-card with a bar chart visualizing ethnic distribution and COVID-19 severity on one side and a static image on the reverse
 
+
+Flask app
 ```python
-<div class="name">
-  <h1>Relationship Between Ethnic Distribution and COVID-19 Severity</h1>  
-</div>
+def process_input(data_dict):
+    
+    # Mapping for data transformation
+    _yesno_map = {"yes": 1, "no": 0}
+    _smoking_map = {"Current or Former": 1, "Never": 0}
 
-    <!-- Ethnic Distribution and COVID-19 Severity Bar chart  -->
-    <div class="container-fluid mt-3">
-      <div class="row">
-          <div class="col-md-8 p-3 text-black-on-light">
-              <div class="flip-card">
-                  <div class="flip-card-inner">
-                      <div class="flip-card-front">
-                          <div id="covid-severity-bar-chart" style="max-width: 100%;"></div>
-                      </div>
-                      <div class="flip-card-back">
-                          <img src="https://dl.dropboxusercontent.com/scl/fi/vnj7ql162x1nlfcacziwj/download-1.png?rlkey=zl7lb7sko3muagw6phuqqd233&dl=0" alt="Chart Back Side">
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <div class="col-md-4 p-3 text-black-on-light">
-              <h2>Analysis</h2>
-              <h2>Conclusions</h2>
-          </div>
-      </div>
-  </div>
+
+    # Deriving values based on the provided template
+    der_age_trunc = float(data_dict['age'])
+    der_obesity = _yesno_map[data_dict['Obesity']]
+    der_smoking2 = _smoking_map[data_dict['Smoking Status']]
+    der_race_v2 = data_dict['Race/Ethnicity']
+    urban_rural = data_dict['Residential Area Type']
+    der_cancertr_none = _yesno_map[data_dict['cancer treatment']]
+    der_cancer_status_v4 = data_dict['Cancer Status']
+    der_dm2 = _yesno_map[data_dict['Diabetes Mellitus']]
+    der_card = _yesno_map[data_dict['Cardiovascular Comorbidity']]
+    der_pulm = _yesno_map[data_dict['Pulmonary Comorbidities']]
+    der_renal = _yesno_map[data_dict['Renal Comorbidities']]
+
+    # Constructing the Pandas Series
+    series = pd.Series({
+        'der_age_trunc': der_age_trunc,
+        'der_obesity': der_obesity,
+        'der_smoking2': der_smoking2,
+        'der_race_v2': der_race_v2,
+        'urban_rural': urban_rural,
+        'der_cancertr_none': der_cancertr_none,
+        'der_cancer_status_v4': der_cancer_status_v4,
+        'der_dm2': der_dm2,
+        'der_card': der_card,
+        'der_pulm': der_pulm,
+        'der_renal': der_renal
+    })
+
+    ####### Calling Model Functions
+
+    dean_model = predict_model_dn(series)
+    shan_model = predict_model_sh(series)
+    alex_model = predict_model_afr(series)
+    fozia_model = predict_model_fz(series)
+
+    avg_model = (dean_model + shan_model + alex_model + fozia_model) / 4.0
+
+    output_result = {'value': str(round(avg_model, 2))}    
+    
+    return jsonify(output_result)
+```
+
+
+
+**Dean** \
+Functions to compute densities
+```python
+// Function to compute density
+function kernelDensityEstimator(kernel, X) {
+    return function(V) {
+        return X.map(function(x) {
+            return [x, d3.mean(V, function(v) {
+                return kernel(x - v);
+            })];
+        });
+    };
+}
+
+function kernelEpanechnikov(k) {
+    return function(v) {
+        return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
+    };
+}
+
+function plotCancerDensity() {
+    d3.json("/api/v1/age_status_severity").then(function(data) {
+        let traces = []
+        let density = null,
+            dat = null
+
+        for (i in canHueOrder) {
+            dat = data
+                .filter((d) => d.der_cancer_status_v4 === canHueOrder[i])
+                .map((d) => d.der_age_trunc)
+            density = kde(dat)
+            traces.push({
+                x: density.map((d) => d[0]),
+                y: density.map((d) => 100 * (dat.length / data.length) * d[1]),
+                line: {
+                    color: canColors[i]
+                },
+                mode: "lines",
+                name: canNames[i],
+                type: "scatter",
+                hovermode: false
+            })
+        }
+
+        Plotly.newPlot('density-cancer', traces);
+    })
+}
+```
+Custom hover template for stacked densities
+```python
+            hovertemplate = 'Relative:%{customdata:.3f})%<extra>%{fullData.name}</extra>'
+            if (i == (covHueOrder.length - 1)) {
+                hovertemplate = 'Overall Density:%{y:.3f}% | Relative:%{customdata:.3f})%<extra>%{fullData.name}</extra>'
+            }
+            max_ = Math.max(max_, Math.max(...y))
+            traces.push({
+                x: x,
+                y: y,
+                line: {
+                    color: covColors[i],
+                },
+                fill: "tonexty",
+                fillcolor: covColors[i],
+                mode: "lines",
+                name: covNames[i],
+                type: "scatter",
+                customdata: subvector(y, y_last),
+                hovertemplate: hovertemplate,
+                hoverlabel: {
+                    font: {
+                        color: 'white',
+                        size: 18
+                    }
+                }
+            })
+```
+
+**Shan** 
+Using Keras Tuner to find the optimal hyperparameters for the best neural network model through a hyperparameter search using the Hyperband algorithm.
+```
+def create_model(hp):
+    nn_model = tf.keras.models.Sequential()
+
+    # Allow kerastuner to decide which activation function to use in hidden layers
+    activation = hp.Choice('activation',['relu','tanh','softmax'])
+
+    # Allow kerastuner to decide number of neurons in first layer
+    nn_model.add(tf.keras.layers.Dense(units=hp.Int('first_units',
+        min_value=1,
+        max_value=30,
+        step=5), activation=activation, input_dim=29))
+
+    # Allow kerastuner to decide number of hidden layers and neurons in hidden layers
+    for i in range(hp.Int('num_layers', 1, 10)):
+        nn_model.add(tf.keras.layers.Dense(units=hp.Int('units_' + str(i),
+            min_value=1,
+            max_value=30,
+            step=5),
+            activation=activation))
+
+    nn_model.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))
+
+    # Compile the model
+    nn_model.compile(loss="binary_crossentropy", optimizer='adam', metrics=['accuracy', tf.keras.metrics.AUC(name='auc')])
+
+    return nn_model
+     
+
+tuner = kt.Hyperband(
+    create_model,
+    objective="val_accuracy",
+    max_epochs=20,
+    hyperband_iterations=2)
+     
+
+tuner.search(X_train, y_train,
+             epochs=20,
+             validation_data=(X_test, y_test))
 
 ```
+
 ## References
 
 **Hamza**
@@ -589,15 +482,6 @@ HTML code for flip-card with a bar chart visualizing ethnic distribution and COV
 
 **Mina**
 * [Page structures](https://getbootstrap.com) , ChatGPT
-* [Uploading images from GoogleDrive to Our Team page](https://stackoverflow.com/questions/77851898/using-google-drive-link-as-img-src-on-react-app-not-working)
-* [Home page navbar](https://tachyons.io/components/nav/logo-titles-links-centered/index.html)
-
-**Shan**
-* [Creating the carousel](https://www.w3schools.com/howto/howto_js_slideshow.asp)
-* [Deploy a Fly.io App](https://fly.io/docs/apps/deploy/)
-* [First image for race/covid/breastcancer page](https://www.cbcn.ca/web/default/files/public/Stories/race%20influence%20header.jpeg)
-* [Second image for race/covid/breastcancer page](https://dpjh8al9zd3a4.cloudfront.net/image/h:720,w:1800/183865)
-
 
 
 **Dean**

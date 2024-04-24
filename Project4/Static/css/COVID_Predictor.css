@@ -1,12 +1,14 @@
-/* Navbar */
+/* /////////// Navbar /////////// */
 .navbar.navbar-dark.bg-dark {
     width:100%;
 }
 
-/* Page background color */
+/* /////////// Page background color /////////// */
 body {
     background-color: ivory; /* Off-white background color */
 }
+
+/* /////////// Modal //////////// */
 
 /* Popup title */
 .popup-title {
@@ -54,6 +56,23 @@ body {
     align-items: center;
 }
 
+/* Modal Animation */
+.animate__animated.animate__zoomIn {
+    animation-duration: 1s;
+}
+
+
+/* /////////// Instruction /////////// */
+
+.instruction {
+    background-color: #EBDFCE; /* Set background color to EBDFCE */
+    padding: 20px; /* Add padding for better appearance */
+    margin-bottom: 30px; /* Add space between the instruction  section and questionnaire*/
+}
+
+/* /////////// Questionnaire /////////// */
+
+/* Questionnaire Content Box */
 .content-box {
     margin: 20px auto;
     padding: 20px;
@@ -62,18 +81,12 @@ body {
     border: 1px solid #ccc;
 }
 
-/* Introduction Background */
-.instruction {
-    background-color: #EBDFCE; /* Set background color to EBDFCE */
-    padding: 20px; /* Add padding for better appearance */
-    margin-bottom: 30px; /* Add space between the instruction  section and questionnaire*/
-}
-
 /* Move the questionnaire to the right */
 .questionnaire {
     margin-left: 90px; 
 }
 
+/* Space adjustment */
 .dropdown-questions p {
     margin-bottom: 8px; /* Add space below each question */
 }
@@ -81,6 +94,20 @@ body {
 .spacer {
     margin-bottom: 50px; /* Adjust the space between the questions */
 }
+
+/* Unanswered questions */
+.unanswered {
+    box-shadow: 0 0 10px 5px rgba(243, 78, 78, 0.5);
+}
+
+.error-message {
+    font-weight: bold;
+    display: none;
+    text-align: center; /* Center-align the text */
+    color: red;
+}
+
+/* /////////// Predict Button /////////// */
 
 #predictButton {
     color: white;
@@ -100,13 +127,7 @@ body {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
-.unanswered {
-    box-shadow: 0 0 10px 5px rgba(243, 78, 78, 0.5);
-}
 
-.error-message {
-    font-weight: bold;
-    display: none;
-    text-align: center; /* Center-align the text */
-    color: red;
-}
+
+
+
