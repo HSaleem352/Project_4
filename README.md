@@ -241,177 +241,58 @@ css code for the carousel displaying the pie charts with the timing of BC treatm
 
 **Hamza**
 
-amCharts library was used for donut graphs,
-plotli was used for bar graph,
-animate.css library was used for the home page animation,
-bootstrap library was used for collapse buttons.
-
-### SQL Postgres from Render:
-
-for writing data to the server:
-```python
-with engine.connect() as connection:
-    residence_counts.to_sql('api_endpoint',connection)
-```
-for reading data from the server:
-```python
-with engine.connect() as connection:
-        df = pd.read_sql('api_endpoint',connection)
-```
-
-### Gradient Donut Graph:
-```python
-// Read the Data
-  var names = response.map(d => d.urban_rural);
-  var count = response.map(d => d.count);
-  var figure = [];
-
-  for (let i = 0; i < names.length; i++) {
-    figure.push(
-    {labels: names[i], values: count[i]}
-    )
-  }
-
-  //Create root element
-  var root = am5.Root.new("residence_pie");
-
-  // Set themes
-  root.setThemes([
-    am5themes_Animated.new(root),
-  ]);
-
-  // Create chart
-  var chart = root.container.children.push(am5percent.PieChart.new(root, {
-    radius: am5.percent(90),
-    innerRadius: am5.percent(50),
-    layout: root.horizontalLayout
-  }));
-  // Creating the series template
-  var series = chart.series.push(am5percent.PieSeries.new(root, {
-    name: "Residence",
-    valueField: "values",
-    categoryField: "labels"
-  }));
-  // Setting the data
-  series.data.setAll(figure)
-
-  // Disabling labels and ticks
-  series.labels.template.set("visible", false);
-  series.ticks.template.set("visible", false);
-
-  // Adding gradients
-  series.slices.template.set("strokeOpacity", 0);
-  series.slices.template.set("fillGradient", am5.RadialGradient.new(root, {
-    stops: [{
-      brighten: -0.8
-    }, {
-      brighten: -0.8
-    }, {
-      brighten: -0.5
-    }, {
-      brighten: 0
-    }, {
-      brighten: -0.5
-    }]
-  }));
-
-  // Create legend
-  var legend = chart.children.push(am5.Legend.new(root, {
-    centerY: am5.percent(50),
-    y: am5.percent(50),
-    layout: root.verticalLayout
-  }));
-  // set value labels align to right
-  legend.valueLabels.template.setAll({ textAlign: "right" })
-  // set width and max width of labels
-  legend.labels.template.setAll({ 
-    maxWidth: 140,
-    width: 140,
-    oversizedBehavior: "wrap"
-  });
-
-  legend.data.setAll(series.dataItems);
 
 
-  // Play initial series animation
-  series.appear(1000, 100);
-  
-**Dean** \
-Functions to compute densities
-```python
-// Function to compute density
-function kernelDensityEstimator(kernel, X) {
-    return function(V) {
-        return X.map(function(x) {
-            return [x, d3.mean(V, function(v) {
-                return kernel(x - v);
-            })];
-        });
-    };
-}
+def process_input(data_dict):
+    
+    # Mapping for data transformation
+    _yesno_map = {"yes": 1, "no": 0}
+    _smoking_map = {"Current or Former": 1, "Never": 0}
 
-function kernelEpanechnikov(k) {
-    return function(v) {
-        return Math.abs(v /= k) <= 1 ? 0.75 * (1 - v * v) / k : 0;
-    };
-}
 
-function plotCancerDensity() {
-    d3.json("/api/v1/age_status_severity").then(function(data) {
-        let traces = []
-        let density = null,
-            dat = null
+    # Deriving values based on the provided template
+    der_age_trunc = float(data_dict['age'])
+    der_obesity = _yesno_map[data_dict['Obesity']]
+    der_smoking2 = _smoking_map[data_dict['Smoking Status']]
+    der_race_v2 = data_dict['Race/Ethnicity']
+    urban_rural = data_dict['Residential Area Type']
+    der_cancertr_none = _yesno_map[data_dict['cancer treatment']]
+    der_cancer_status_v4 = data_dict['Cancer Status']
+    der_dm2 = _yesno_map[data_dict['Diabetes Mellitus']]
+    der_card = _yesno_map[data_dict['Cardiovascular Comorbidity']]
+    der_pulm = _yesno_map[data_dict['Pulmonary Comorbidities']]
+    der_renal = _yesno_map[data_dict['Renal Comorbidities']]
 
-        for (i in canHueOrder) {
-            dat = data
-                .filter((d) => d.der_cancer_status_v4 === canHueOrder[i])
-                .map((d) => d.der_age_trunc)
-            density = kde(dat)
-            traces.push({
-                x: density.map((d) => d[0]),
-                y: density.map((d) => 100 * (dat.length / data.length) * d[1]),
-                line: {
-                    color: canColors[i]
-                },
-                mode: "lines",
-                name: canNames[i],
-                type: "scatter",
-                hovermode: false
-            })
-        }
-
-        Plotly.newPlot('density-cancer', traces);
+    # Constructing the Pandas Series
+    series = pd.Series({
+        'der_age_trunc': der_age_trunc,
+        'der_obesity': der_obesity,
+        'der_smoking2': der_smoking2,
+        'der_race_v2': der_race_v2,
+        'urban_rural': urban_rural,
+        'der_cancertr_none': der_cancertr_none,
+        'der_cancer_status_v4': der_cancer_status_v4,
+        'der_dm2': der_dm2,
+        'der_card': der_card,
+        'der_pulm': der_pulm,
+        'der_renal': der_renal
     })
-}
-```
-Custom hover template for stacked densities
-```python
-            hovertemplate = 'Relative:%{customdata:.3f})%<extra>%{fullData.name}</extra>'
-            if (i == (covHueOrder.length - 1)) {
-                hovertemplate = 'Overall Density:%{y:.3f}% | Relative:%{customdata:.3f})%<extra>%{fullData.name}</extra>'
-            }
-            max_ = Math.max(max_, Math.max(...y))
-            traces.push({
-                x: x,
-                y: y,
-                line: {
-                    color: covColors[i],
-                },
-                fill: "tonexty",
-                fillcolor: covColors[i],
-                mode: "lines",
-                name: covNames[i],
-                type: "scatter",
-                customdata: subvector(y, y_last),
-                hovertemplate: hovertemplate,
-                hoverlabel: {
-                    font: {
-                        color: 'white',
-                        size: 18
-                    }
-                }
-            })
-```
+
+    ####### Calling Model Functions
+
+    dean_model = predict_model_dn(series)
+    shan_model = predict_model_sh(series)
+    alex_model = predict_model_afr(series)
+    fozia_model = predict_model_fz(series)
+
+    avg_model = (dean_model + shan_model + alex_model + fozia_model) / 4.0
+
+    output_result = {'value': str(round(avg_model, 2))}    
+    
+    return jsonify(output_result)
+
+
+
 
 **Dean** \
 Functions to compute densities
